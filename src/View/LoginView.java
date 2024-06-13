@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginView extends JFrame { //extends from JFrame because using the JFrame properties
+public class LoginView extends Layout { //extends from JFrame because using the JFrame properties
     private JPanel container;
     private JPanel w_top;
     private JLabel lbl_welcome;
@@ -25,11 +25,7 @@ public class LoginView extends JFrame { //extends from JFrame because using the 
     public LoginView() {
         this.userManager = new UserManager();
         this.add(container);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setTitle("Tourism Agency System");
-        this.setSize(400, 400);
-        this.setLocation(Helper.getLocationPoint("x", this.getSize()), Helper.getLocationPoint("y", this.getSize()));
-        this.setVisible(true);
+        this.guiInitialize(400, 500);
         btn_login.addActionListener(e -> {
             JTextField[] checkFieldList = {this.fld_username, this.fld_password};
             if (Helper.isFieldListEmpty(checkFieldList)) {
@@ -39,7 +35,15 @@ public class LoginView extends JFrame { //extends from JFrame because using the 
                 if (loginUser == null) {
                     Helper.showMessage("notFound");
                 } else {
-                    System.out.println(loginUser.toString());
+                    if (loginUser.getUserType().equals("admin")) {
+                        AdminView adminView = new AdminView(loginUser);
+                        dispose();
+                    } else if (loginUser.getUserType().equals("staff")) {
+                        StaffView staffView = new StaffView(loginUser);
+                        dispose();
+                    } else {
+                        Helper.showMessage("error");
+                    }
                 }
             }
         });
