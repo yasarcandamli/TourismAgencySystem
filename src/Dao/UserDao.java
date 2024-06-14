@@ -43,7 +43,7 @@ public class UserDao {
         return object;
     }
 
-    public ArrayList<User> findByAll() {
+    public ArrayList<User> findAll() {
         ArrayList<User> userList = new ArrayList<>();
         String query = "SELECT * FROM public.users;";
         try {

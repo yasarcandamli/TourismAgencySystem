@@ -10,6 +10,6 @@ public class App {
         Helper.setTheme();
 //        LoginView loginView = new LoginView();
         UserManager userManager = new UserManager();
-        AdminView adminView = new AdminView(userManager.findByLogin("admin", "1234"));
+        AdminView adminView = new AdminView(userManager.findByLogin("admin", "1234"), userManager);
     }
 }

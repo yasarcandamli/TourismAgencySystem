@@ -36,10 +36,10 @@ public class LoginView extends Layout { //extends from JFrame because using the 
                     Helper.showMessage("notFound");
                 } else {
                     if (loginUser.getUserType().equals("admin")) {
-                        AdminView adminView = new AdminView(loginUser);
+                        AdminView adminView = new AdminView(loginUser, userManager);
                         dispose();
                     } else if (loginUser.getUserType().equals("staff")) {
-                        StaffView staffView = new StaffView(loginUser);
+                        StaffView staffView = new StaffView(loginUser, userManager);
                         dispose();
                     } else {
                         Helper.showMessage("error");
