@@ -63,8 +63,12 @@ public class AdminView extends Layout {
         this.userMenu.add("Yeni").addActionListener(e -> {
 
         });
-        this.userMenu.add("Güncelle");
-        this.userMenu.add("Sil");
+        this.userMenu.add("Güncelle").addActionListener(e -> {
+
+        });
+        this.userMenu.add("Sil").addActionListener(e -> {
+
+        });
 
         this.tbl_user.setComponentPopupMenu(userMenu);
     }
