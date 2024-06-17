@@ -26,13 +26,15 @@ public class LoginView extends Layout { //extends from JFrame because using the 
         this.userManager = new UserManager();
         this.add(container);
         this.guiInitialize(400, 500);
+
+        //What to do when the button is clicked
         btn_login.addActionListener(e -> {
             JTextField[] checkFieldList = {this.fld_username, this.fld_password};
-            if (Helper.isFieldListEmpty(checkFieldList)) {
+            if (Helper.isFieldListEmpty(checkFieldList)) { //Querying whether text fields are empty or not, sending error if empty
                 Helper.showMessage("fill");
             } else {
                 User loginUser = this.userManager.findByLogin(this.fld_username.getText(), this.fld_password.getText());
-                if (loginUser == null) {
+                if (loginUser == null) { //If the user does not exist, it gives a not found warning
                     Helper.showMessage("notFound");
                 } else {
                     if (loginUser.getUserType().equals("admin")) {

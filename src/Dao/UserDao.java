@@ -16,7 +16,8 @@ public class UserDao {
         this.connection = Db.getInstance();
     }
 
-    public User match(ResultSet resultSet) throws SQLException {    //DTO: Data Transfer Object
+    //DTO: Data Transfer Object
+    public User match(ResultSet resultSet) throws SQLException {
         User object = new User();
         object.setUserId(resultSet.getInt("user_id"));
         object.setUserName(resultSet.getString("user_name"));
@@ -25,6 +26,7 @@ public class UserDao {
         return object;
     }
 
+    //Querying whether the user is present
     public User findByLogin(String userName, String userPassword) {
         User object = null;
         String query = "SELECT * FROM public.users WHERE user_name = ? AND user_password = ?;";
@@ -43,6 +45,7 @@ public class UserDao {
         return object;
     }
 
+    //Query that returns all users
     public ArrayList<User> findAll() {
         ArrayList<User> userList = new ArrayList<>();
         String query = "SELECT * FROM public.users;";

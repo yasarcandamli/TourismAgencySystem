@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Helper {
+    //Replacing the UI interface with one called "Nimbus"
     public static void setTheme() {
         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
             if ("Nimbus".equals(info.getName())) {
@@ -13,14 +14,11 @@ public class Helper {
                     System.out.println(e.getMessage());
                 }
             }
+            break;
         }
     }
 
-    //Querying whether text fields are empty or not
-    public static boolean isFieldEmpty(JTextField field) {
-        return field.getText().trim().isEmpty();
-    }
-
+    //Displaying messages according to specific situations
     public static void showMessage(String string) {
         String message;
         String title;
@@ -49,6 +47,12 @@ public class Helper {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    //Querying whether text field is empty or not
+    public static boolean isFieldEmpty(JTextField field) {
+        return field.getText().trim().isEmpty();
+    }
+
+    //Querying whether text fields are empty or not
     public static boolean isFieldListEmpty(JTextField[] fieldList) {
         for (JTextField field : fieldList) {
             if (isFieldEmpty(field)) return true;
@@ -56,6 +60,7 @@ public class Helper {
         return false;
     }
 
+    //Setting the location of the window to the centre of the screen
     public static int getLocationPoint(String type, Dimension size) {
         return switch (type) {
             case "x" -> (Toolkit.getDefaultToolkit().getScreenSize().width - size.width) / 2;
