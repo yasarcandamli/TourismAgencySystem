@@ -1,12 +1,14 @@
 package View;
 
 import Business.UserManager;
+import Core.ComboItem;
+import Core.Helper;
 import Entity.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class AdminView extends Layout {
@@ -18,16 +20,20 @@ public class AdminView extends Layout {
     private JPanel pnl_user;
     private JScrollPane scrl_user;
     private JTable tbl_user;
+    private JComboBox<User.UserType> cmb_filter_user_type;
+    private JButton btn_filter_user;
+    private JButton btn_clear_user_filter;
     private User user;
     private UserManager userManager;
     private DefaultTableModel tmdl_user = new DefaultTableModel();
-    private JPopupMenu userMenu;
+    private JPopupMenu user_menu;
+    private Object[] col_user;
 
     public AdminView(User user, UserManager userManager) {
+        this.user = user;
         this.userManager = userManager;
         this.add(container);
         this.guiInitialize(1000, 500);
-        this.user = user;
 
         if (this.user == null) {
             dispose();
@@ -35,41 +41,74 @@ public class AdminView extends Layout {
 
         this.lbl_admin_welcome.setText("Welcome: " + this.user.getUserName());
 
-        Object[] column_user = {"User Id", "User Name", "User Password", "User Type"}; //Column names in the Admin window
-        ArrayList<User> userList = userManager.findAll(); //Find all users in the database
-        this.tmdl_user.setColumnIdentifiers(column_user); //Adding columns to the table
+        loadUserTable(null);
+        loadUserComponent();
+        loadUserFilter();
+    }
 
-        for (User u : userList) {
-            Object[] object = {u.getUserId(), u.getUserName(), u.getUserPassword(), u.getUserType()}; //Find the information of each user in the userList and assign it to the object line by line
-            this.tmdl_user.addRow(object); //The object must be the same size as the colon size
+    public void loadUserTable(ArrayList<Object[]> userList) {
+        this.col_user = new Object[]{"User ID", "Username", "User Password", "User Type"};
+        if (userList == null) {
+            userList = this.userManager.getForTable(col_user.length, this.userManager.findAll()); //Transfer all users to the table with methods in UserManager
         }
+        createTable(this.tmdl_user, this.tbl_user, col_user, userList);
+    }
 
-        this.tbl_user.setModel(this.tmdl_user); //Assign the model we created to the table
-        this.tbl_user.getTableHeader().setReorderingAllowed(false); //Prevent table headers from being changed
-        this.tbl_user.setEnabled(false); //Prevent the table from being edited by double-clicking
+    public void loadUserComponent() {
+        this.user_menu = new JPopupMenu();
+        this.selectRow(this.tbl_user, this.user_menu);
 
-        this.userMenu = new JPopupMenu();
-        this.tbl_user.addMouseListener(new MouseAdapter() { //When clicking somewhere in the table, the clicked row is selected
-            @Override
-            public void mousePressed(MouseEvent e) {
-                int selected_row = tbl_user.rowAtPoint(e.getPoint()); //Finding the coordinate where the mouse is located
-                tbl_user.setRowSelectionInterval(selected_row, selected_row);
-                //To make a pop_up menu appear on right click
-                if (SwingUtilities.isRightMouseButton(e)) {
-                    userMenu.show(tbl_user, e.getX(), e.getY());
+        //We will use the new user creation and update features on the same window. If we send an empty user we will create a new user, if we send an existing user we will update it
+        this.user_menu.add("New").addActionListener(e -> {
+            UserView userView = new UserView(new User(), this.userManager);
+            userView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadUserTable(null);
+                }
+            });
+        });
+        this.user_menu.add("Update").addActionListener(e -> {
+            int selectUserId = this.getTableSelectedRow(tbl_user, 0);
+            UserView userView = new UserView(this.userManager.getById(selectUserId), this.userManager);
+            userView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadUserTable(null);
+                }
+            });
+        });
+        this.user_menu.add("Delete").addActionListener(e -> {
+            if (Helper.confirm("sure")) {
+                int selectUserId = this.getTableSelectedRow(tbl_user, 0);
+                if (this.userManager.delete(selectUserId)) {
+                    Helper.showMessage("done");
+                    loadUserTable(null);
+                } else {
+                    Helper.showMessage("error");
                 }
             }
         });
-        this.userMenu.add("New").addActionListener(e -> {
 
+        this.tbl_user.setComponentPopupMenu(user_menu); //Integrating pop-up menu in the table
+
+        this.btn_filter_user.addActionListener(e -> {
+            ArrayList<User> userListForFilter = this.userManager.filterForTable(
+                    (User.UserType) cmb_filter_user_type.getSelectedItem()
+            );
+
+            ArrayList<Object[]> userRowListBySearch = this.userManager.getForTable(this.col_user.length, userListForFilter);
+            loadUserTable(userRowListBySearch);
         });
-        this.userMenu.add("Update").addActionListener(e -> {
 
+        this.btn_clear_user_filter.addActionListener(e -> {
+            this.cmb_filter_user_type.setSelectedItem(null);
+            loadUserTable(null);
         });
-        this.userMenu.add("Delete").addActionListener(e -> {
+    }
 
-        });
-
-        this.tbl_user.setComponentPopupMenu(userMenu); //Integrating pop-up menu in the table
+    public void loadUserFilter() {
+        this.cmb_filter_user_type.setModel(new DefaultComboBoxModel<>(User.UserType.values()));
+        this.cmb_filter_user_type.setSelectedItem(null);
     }
 }

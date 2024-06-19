@@ -4,12 +4,17 @@ public class User {
     private int userId;
     private String userName;
     private String userPassword;
-    private String userType;
+    private UserType userType;
+
+    public enum UserType {
+        ADMIN,
+        STAFF
+    }
 
     public User() {
     }
 
-    public User(int userId, String userName, String userPassword, String userType) {
+    public User(int userId, String userName, String userPassword, UserType userType) {
         this.userId = userId;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -40,11 +45,11 @@ public class User {
         this.userPassword = userPassword;
     }
 
-    public String getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
-    public void setUserType(String userType) {
+    public void setUserType(UserType userType) {
         this.userType = userType;
     }
 

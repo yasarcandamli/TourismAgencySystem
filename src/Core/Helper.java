@@ -47,6 +47,16 @@ public class Helper {
         JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    public static boolean confirm(String string) {
+        String message;
+        if (string.equals("sure")) {
+            message = "Are you sure to continue?";
+        } else {
+            message = string;
+        }
+        return JOptionPane.showConfirmDialog(null, message, "Are you sure?", JOptionPane.YES_NO_OPTION) == 0;
+    }
+
     //Querying whether text field is empty or not
     public static boolean isFieldEmpty(JTextField field) {
         return field.getText().trim().isEmpty();
