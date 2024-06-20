@@ -26,7 +26,7 @@ public class HotelDao {
         object.setHotelAddress(resultSet.getString("hotel_address"));
         object.setHotelEmail(resultSet.getString("hotel_email"));
         object.setHotelPhoneNumber(resultSet.getString("hotel_phone_number"));
-        object.setHotelStar(resultSet.getString("hotel_star"));
+        object.setHotelStar(Hotel.HotelStar.valueOf(resultSet.getString("hotel_star")));
         object.setHotelFacility(resultSet.getString("hotel_facility"));
         return object;
     }
@@ -52,15 +52,15 @@ public class HotelDao {
         String query = "INSERT INTO public.hotels " +
                 "(" +
                 "hotel_name, " +
-                "hotel_city" +
-                "hotel_district" +
-                "hotel_address" +
-                "hotel_email" +
-                "hotel_phone_number" +
-                "hotel_star" +
+                "hotel_city, " +
+                "hotel_district, " +
+                "hotel_address, " +
+                "hotel_email, " +
+                "hotel_phone_number, " +
+                "hotel_star, " +
                 "hotel_facility" +
                 ")" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setString(1, hotel.getHotelName());
@@ -69,7 +69,7 @@ public class HotelDao {
             preparedStatement.setString(4, hotel.getHotelAddress());
             preparedStatement.setString(5, hotel.getHotelEmail());
             preparedStatement.setString(6, hotel.getHotelPhoneNumber());
-            preparedStatement.setString(7, hotel.getHotelStar());
+            preparedStatement.setString(7, hotel.getHotelStar().toString());
             preparedStatement.setString(8, hotel.getHotelFacility());
 
             return preparedStatement.executeUpdate() != -1;
@@ -99,7 +99,7 @@ public class HotelDao {
             preparedStatement.setString(4, hotel.getHotelAddress());
             preparedStatement.setString(5, hotel.getHotelEmail());
             preparedStatement.setString(6, hotel.getHotelPhoneNumber());
-            preparedStatement.setString(7, hotel.getHotelStar());
+            preparedStatement.setString(7, hotel.getHotelStar().toString());
             preparedStatement.setString(8, hotel.getHotelFacility());
             preparedStatement.setInt(9, hotel.getHotelId());
 

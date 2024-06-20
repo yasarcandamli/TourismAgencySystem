@@ -8,13 +8,23 @@ public class Hotel {
     private String hotelAddress;
     private String hotelEmail;
     private String hotelPhoneNumber;
-    private String hotelStar;
+    private HotelStar hotelStar;
     private String hotelFacility;
+
+    public enum HotelStar{
+        One,
+        Two,
+        Three,
+        Four,
+        Five,
+        Six,
+        Seven
+    }
 
     public Hotel() {
     }
 
-    public Hotel(int hotelId, String hotelName, String hotelCity, String hotelDistrict, String hotelAddress, String hotelEmail, String hotelPhoneNumber, String hotelStar, String hotelFacility) {
+    public Hotel(int hotelId, String hotelName, String hotelCity, String hotelDistrict, String hotelAddress, String hotelEmail, String hotelPhoneNumber, HotelStar hotelStar, String hotelFacility) {
         this.hotelId = hotelId;
         this.hotelName = hotelName;
         this.hotelCity = hotelCity;
@@ -82,11 +92,11 @@ public class Hotel {
         this.hotelPhoneNumber = hotelPhoneNumber;
     }
 
-    public String getHotelStar() {
+    public HotelStar getHotelStar() {
         return hotelStar;
     }
 
-    public void setHotelStar(String hotelStar) {
+    public void setHotelStar(HotelStar hotelStar) {
         this.hotelStar = hotelStar;
     }
 

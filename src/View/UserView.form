@@ -14,7 +14,7 @@
         </constraints>
         <properties>
           <font size="16" style="1"/>
-          <text value="Create New User / Update User"/>
+          <text value="Add New User / Update User"/>
         </properties>
       </component>
       <vspacer id="8a917">
