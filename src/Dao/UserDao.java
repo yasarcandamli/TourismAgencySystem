@@ -63,7 +63,7 @@ public class UserDao {
         return userList;
     }
 
-    public boolean save(User user) {
+    public boolean add(User user) {
         String query = "INSERT INTO public.users " +
                 "(" +
                 "user_name, " +

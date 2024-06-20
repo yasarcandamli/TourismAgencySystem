@@ -21,11 +21,11 @@ public class UserManager {
         return userDao.findAll();
     }
 
-    public boolean save(User userSample) {
+    public boolean add(User userSample) {
         if (userSample.getUserId() != 0) {
             Helper.showMessage("error");
         }
-        return this.userDao.save(userSample);
+        return this.userDao.add(userSample);
     }
 
     public boolean update(User userSample) {

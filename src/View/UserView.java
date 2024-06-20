@@ -1,7 +1,6 @@
 package View;
 
 import Business.UserManager;
-import Core.ComboItem;
 import Core.Helper;
 import Entity.User;
 
@@ -46,7 +45,7 @@ public class UserView extends Layout {
                 if (this.user.getUserId() != 0) {
                     result = this.userManager.update(this.user);
                 } else {
-                    result = this.userManager.save(this.user);
+                    result = this.userManager.add(this.user);
                 }
 
                 if (result){
