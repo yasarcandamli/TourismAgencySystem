@@ -20,9 +20,9 @@ public class UserView extends Layout {
     private UserManager userManager;
 
     //We will use the new user creation and update features on the same window. If we send an empty user we will create a new user, if we send an existing user we will update it
-    public UserView(User user, UserManager userManager) {
+    public UserView(User user) {
         this.user = user;
-        this.userManager = userManager;
+        this.userManager = new UserManager();
         this.add(container);
         this.guiInitialize(300, 250);
 

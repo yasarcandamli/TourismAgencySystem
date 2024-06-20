@@ -29,9 +29,9 @@ public class AdminView extends Layout {
     private JPopupMenu user_menu;
     private Object[] col_user;
 
-    public AdminView(User user, UserManager userManager) {
+    public AdminView(User user) {
         this.user = user;
-        this.userManager = userManager;
+        this.userManager = new UserManager();
         this.add(container);
         this.guiInitialize(1000, 500);
 
@@ -60,7 +60,7 @@ public class AdminView extends Layout {
 
         //We will use the new user creation and update features on the same window. If we send an empty user we will create a new user, if we send an existing user we will update it
         this.user_menu.add("New").addActionListener(e -> {
-            UserView userView = new UserView(new User(), this.userManager);
+            UserView userView = new UserView(new User());
             userView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
@@ -70,7 +70,7 @@ public class AdminView extends Layout {
         });
         this.user_menu.add("Update").addActionListener(e -> {
             int selectUserId = this.getTableSelectedRow(tbl_user, 0);
-            UserView userView = new UserView(this.userManager.getById(selectUserId), this.userManager);
+            UserView userView = new UserView(this.userManager.getById(selectUserId));
             userView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {

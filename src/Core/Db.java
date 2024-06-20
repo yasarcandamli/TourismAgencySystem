@@ -31,7 +31,7 @@ public class Db {
     //If the instance is null or closed, create a new instance and return an object from the Db class and call the getConnection method on this object
     public static Connection getInstance() {
         try {
-            if (instance == null || getInstance().isClosed()) {
+            if (instance == null || instance.getConnection().isClosed()) {
                 instance = new Db();
             }
         } catch (SQLException e) {
