@@ -90,6 +90,7 @@ public class HotelDao {
                 "hotel_phone_number = ?, " +
                 "hotel_star = ?, " +
                 "hotel_facility = ? " +
+                ")" +
                 "WHERE hotel_id = ?;";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
