@@ -87,6 +87,16 @@ public class StaffView extends Layout {
                 }
             }
         });
+        this.hotel_menu.add("Hotel Details").addActionListener(e -> {
+            int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
+            HotelDetailView hotelDetailView = new HotelDetailView(this.hotelManager.getById(selectHotelId));
+            hotelDetailView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadHotelTable(null);
+                }
+            });
+        });
 
         this.tbl_hotel.setComponentPopupMenu(hotel_menu); //Integrating pop-up menu in the table
     }

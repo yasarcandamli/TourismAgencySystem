@@ -27,6 +27,10 @@ public class Helper {
                 message = "Please, enter the all fields!";
                 title = "Error";
             }
+            case "choose" -> {
+                message = "Please, choose something!";
+                title = "Error";
+            }
             case "done" -> {
                 message = "Operation successful!";
                 title = "Result";

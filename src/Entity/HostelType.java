@@ -3,31 +3,12 @@ package Entity;
 public class HostelType {
     private int hostelTypeId;
     private int hotelId;
-    private HostelTypes hostelType;
-
-    public enum HostelTypes {
-        Ultra("Ultra All Inclusive"),
-        All("All Inclusive"),
-        Breakfast("Room Breakfast"),
-        Full("Full Board"),
-        Half("Half Board"),
-        Only("Bed Only"),
-        Full_Credit("Full credit excluding alcohol");
-
-        private final String hostelType;
-        HostelTypes(String hostelType){
-            this.hostelType = hostelType;
-        }
-
-        public String getHostelType(){
-            return this.name();
-        }
-    }
+    private String hostelType;
 
     public HostelType() {
     }
 
-    public HostelType(int hostelTypeId, int hotelId, HostelTypes hostel) {
+    public HostelType(int hostelTypeId, int hotelId, String hostel) {
         this.hostelTypeId = hostelTypeId;
         this.hotelId = hotelId;
         this.hostelType = hostel;
@@ -49,11 +30,11 @@ public class HostelType {
         this.hotelId = hotelId;
     }
 
-    public HostelTypes getHostelType() {
+    public String getHostelType() {
         return hostelType;
     }
 
-    public void setHostelType(HostelTypes hostelType) {
+    public void setHostelType(String hostelType) {
         this.hostelType = hostelType;
     }
 }

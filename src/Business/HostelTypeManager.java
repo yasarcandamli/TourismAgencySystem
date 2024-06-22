@@ -3,6 +3,7 @@ package Business;
 import Core.Helper;
 import Dao.HostelTypeDao;
 import Entity.HostelType;
+import Entity.Hotel;
 
 import java.util.ArrayList;
 
@@ -17,32 +18,37 @@ public class HostelTypeManager {
         return hostelTypeDao.findAll();
     }
 
-    public boolean add(HostelType hostelType) {
-        if (hostelType.getHotelId() != 0) {
-            Helper.showMessage("error");
+    public boolean add(Hotel hotel, String hostelType) {
+        if (this.getByName(hostelType) != null){
+            Helper.showMessage("Already Exist!");
+            return false;
         }
-        return this.hostelTypeDao.add(hostelType);
+        return this.hostelTypeDao.add(hotel, hostelType);
     }
 
-    public boolean update(HostelType hostelType) {
-        if (this.getById(hostelType.getHostelTypeId()) == null) {
+//    public boolean update(HostelType hostelType) {
+//        if (this.getById(hostelType.getHostelTypeId()) == null) {
+//            Helper.showMessage("notFound");
+//            return false;
+//        }
+//        return this.hostelTypeDao.update(hostelType);
+//    }
+
+    public boolean delete(int hostelTypeId) {
+        if (this.getById(hostelTypeId) == null) {
             Helper.showMessage("notFound");
             return false;
         }
-        return this.hostelTypeDao.update(hostelType);
-    }
-
-    public boolean delete(int hotelId) {
-        if (this.getById(hotelId) == null) {
-            Helper.showMessage("notFound");
-            return false;
-        }
-        return this.hostelTypeDao.delete(hotelId);
+        return this.hostelTypeDao.delete(hostelTypeId);
     }
 
     public HostelType getById(int selectHostelTypeId) {
         return this.hostelTypeDao.getById(selectHostelTypeId);
     }
+    public HostelType getByName(String selectHostelTypeName) {
+        return this.hostelTypeDao.getByName(selectHostelTypeName);
+    }
+
 
     public ArrayList<Object[]> getForTable(int size, ArrayList<HostelType> hostelTypeList) { //Create objects as many as the number of columns
         ArrayList<Object[]> hostelTypeObjectList = new ArrayList<>();

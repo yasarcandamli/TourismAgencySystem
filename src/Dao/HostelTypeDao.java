@@ -22,7 +22,7 @@ public class HostelTypeDao {
         HostelType object = new HostelType();
         object.setHostelTypeId(resultSet.getInt("hostel_type_id"));
         object.setHotelId(resultSet.getInt("hotel_id"));
-        object.setHostelType(HostelType.HostelTypes.valueOf(resultSet.getString("hotel_type")));
+        object.setHostelType(resultSet.getString("hostel_type"));
         return object;
     }
 
@@ -43,7 +43,7 @@ public class HostelTypeDao {
         return hostelTypeList;
     }
 
-    public boolean add(HostelType hostelType) {
+    public boolean add(Hotel hotel, String hostelType) {
         String query = "INSERT INTO public.hostel_type " +
                 "(" +
                 "hotel_id, " +
@@ -52,8 +52,8 @@ public class HostelTypeDao {
                 " VALUES (?, ?);";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement.setInt(1, hostelType.getHotelId());
-            preparedStatement.setString(2, hostelType.getHostelType().name());
+            preparedStatement.setInt(1, hotel.getHotelId());
+            preparedStatement.setString(2, hostelType);
 
             return preparedStatement.executeUpdate() != -1;
         } catch (SQLException e) {
@@ -72,7 +72,7 @@ public class HostelTypeDao {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setInt(1, hostelType.getHotelId());
-            preparedStatement.setString(2, hostelType.getHostelType().name());
+            preparedStatement.setString(2, hostelType.getHostelType());
             preparedStatement.setInt(3, hostelType.getHostelTypeId());
 
             return preparedStatement.executeUpdate() != -1;
@@ -83,7 +83,7 @@ public class HostelTypeDao {
     }
 
     public boolean delete(int hostelTypeId) {
-        String query = "DELETE FROM public.hotels WHERE hostel_type = ?;";
+        String query = "DELETE FROM public.hostel_type WHERE hostel_type_id = ?;";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setInt(1, hostelTypeId);
@@ -96,10 +96,25 @@ public class HostelTypeDao {
 
     public HostelType getById(int selectHostelTypeId) {
         HostelType object = null;
-        String query = "SELECT * FROM public.hotels WHERE hostel_type = ?;";
+        String query = "SELECT * FROM public.hostel_type WHERE hostel_type_id = ?;";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setInt(1, selectHostelTypeId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) object = this.match(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    public HostelType getByName(String selectHostelTypeName) {
+        HostelType object = null;
+        String query = "SELECT * FROM public.hostel_type WHERE hostel_type = ?;";
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setString(1, selectHostelTypeName);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) object = this.match(resultSet);
