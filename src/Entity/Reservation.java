@@ -4,6 +4,7 @@ public class Reservation {
     private int reservationId;
     private int roomId;
     private String customerName;
+    private String customerIdentityNumber;
     private String customerPhoneNumber;
     private String customerEmail;
     private String checkInDate;
@@ -16,10 +17,11 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(int reservationId, int roomId, String customerName, String customerPhoneNumber, String customerEmail, String checkInDate, String checkOutDate, int adultNumber, int childNumber, String customerNote, int totalPrice) {
+    public Reservation(int reservationId, int roomId, String customerName, String customerIdentityNumber, String customerPhoneNumber, String customerEmail, String checkInDate, String checkOutDate, int adultNumber, int childNumber, String customerNote, int totalPrice) {
         this.reservationId = reservationId;
         this.roomId = roomId;
         this.customerName = customerName;
+        this.customerIdentityNumber = customerIdentityNumber;
         this.customerPhoneNumber = customerPhoneNumber;
         this.customerEmail = customerEmail;
         this.checkInDate = checkInDate;
@@ -52,6 +54,14 @@ public class Reservation {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getCustomerIdentityNumber() {
+        return customerIdentityNumber;
+    }
+
+    public void setCustomerIdentityNumber(String customerIdentityNumber) {
+        this.customerIdentityNumber = customerIdentityNumber;
     }
 
     public String getCustomerPhoneNumber() {

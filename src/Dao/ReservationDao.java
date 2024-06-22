@@ -22,6 +22,7 @@ public class ReservationDao {
         object.setReservationId(resultSet.getInt("reservation_id"));
         object.setRoomId(resultSet.getInt("room_id"));
         object.setCustomerName(resultSet.getString("customer_name"));
+        object.setCustomerName(resultSet.getString("customer_identity_number"));
         object.setCustomerEmail(resultSet.getString("customer_email"));
         object.setCheckInDate(resultSet.getString("check_in_date"));
         object.setCheckOutDate(resultSet.getString("check_out_date"));
@@ -54,6 +55,7 @@ public class ReservationDao {
                 "(" +
                 "room_id, " +
                 "customer_name, " +
+                "customer_identity_number, " +
                 "customer_email, " +
                 "check_in_date, " +
                 "check_out_date, " +
@@ -62,18 +64,19 @@ public class ReservationDao {
                 "customer_note," +
                 "total_price" +
                 ")" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setInt(1, reservation.getRoomId());
             preparedStatement.setString(2, reservation.getCustomerName());
-            preparedStatement.setString(3, reservation.getCustomerEmail());
-            preparedStatement.setString(4, reservation.getCheckInDate());
-            preparedStatement.setString(5, reservation.getCheckOutDate());
-            preparedStatement.setInt(6, reservation.getAdultNumber());
-            preparedStatement.setInt(7, reservation.getChildNumber());
-            preparedStatement.setString(8, reservation.getCustomerNote());
-            preparedStatement.setInt(9, reservation.getTotalPrice());
+            preparedStatement.setString(3, reservation.getCustomerIdentityNumber());
+            preparedStatement.setString(4, reservation.getCustomerEmail());
+            preparedStatement.setString(5, reservation.getCheckInDate());
+            preparedStatement.setString(6, reservation.getCheckOutDate());
+            preparedStatement.setInt(7, reservation.getAdultNumber());
+            preparedStatement.setInt(8, reservation.getChildNumber());
+            preparedStatement.setString(9, reservation.getCustomerNote());
+            preparedStatement.setInt(10, reservation.getTotalPrice());
 
             return preparedStatement.executeUpdate() != -1;
         } catch (SQLException e) {
@@ -87,6 +90,7 @@ public class ReservationDao {
                 "(" +
                 "room_id = ?, " +
                 "customer_name = ?, " +
+                "customer_identity_number = ?, " +
                 "customer_email = ?, " +
                 "check_in_date = ?, " +
                 "check_out_date = ?, " +
@@ -100,14 +104,15 @@ public class ReservationDao {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setInt(1, reservation.getRoomId());
             preparedStatement.setString(2, reservation.getCustomerName());
-            preparedStatement.setString(3, reservation.getCustomerEmail());
-            preparedStatement.setString(4, reservation.getCheckInDate());
-            preparedStatement.setString(5, reservation.getCheckOutDate());
-            preparedStatement.setInt(6, reservation.getAdultNumber());
-            preparedStatement.setInt(7, reservation.getChildNumber());
-            preparedStatement.setString(8, reservation.getCustomerNote());
-            preparedStatement.setInt(9, reservation.getTotalPrice());
-            preparedStatement.setInt(10, reservation.getReservationId());
+            preparedStatement.setString(3, reservation.getCustomerIdentityNumber());
+            preparedStatement.setString(4, reservation.getCustomerEmail());
+            preparedStatement.setString(5, reservation.getCheckInDate());
+            preparedStatement.setString(6, reservation.getCheckOutDate());
+            preparedStatement.setInt(7, reservation.getAdultNumber());
+            preparedStatement.setInt(8, reservation.getChildNumber());
+            preparedStatement.setString(9, reservation.getCustomerNote());
+            preparedStatement.setInt(10, reservation.getTotalPrice());
+            preparedStatement.setInt(11, reservation.getReservationId());
 
             return preparedStatement.executeUpdate() != -1;
         } catch (SQLException e) {
