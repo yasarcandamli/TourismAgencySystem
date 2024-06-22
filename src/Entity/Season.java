@@ -1,16 +1,18 @@
 package Entity;
 
+import java.time.LocalDate;
+
 public class Season {
     private int seasonId;
     private int hotelId;
-    private String seasonStartDate;
-    private String seasonEndDate;
+    private LocalDate seasonStartDate;
+    private LocalDate seasonEndDate;
     private String seasonName;
 
     public Season() {
     }
 
-    public Season(int seasonId, int hotelId, String seasonStartDate, String seasonEndDate, String seasonName) {
+    public Season(int seasonId, int hotelId, LocalDate seasonStartDate, LocalDate seasonEndDate, String seasonName) {
         this.seasonId = seasonId;
         this.hotelId = hotelId;
         this.seasonStartDate = seasonStartDate;
@@ -34,19 +36,19 @@ public class Season {
         this.hotelId = hotelId;
     }
 
-    public String getSeasonStartDate() {
+    public LocalDate getSeasonStartDate() {
         return seasonStartDate;
     }
 
-    public void setSeasonStartDate(String seasonStartDate) {
+    public void setSeasonStartDate(LocalDate seasonStartDate) {
         this.seasonStartDate = seasonStartDate;
     }
 
-    public String getSeasonEndDate() {
+    public LocalDate getSeasonEndDate() {
         return seasonEndDate;
     }
 
-    public void setSeasonEndDate(String seasonEndDate) {
+    public void setSeasonEndDate(LocalDate seasonEndDate) {
         this.seasonEndDate = seasonEndDate;
     }
 

@@ -1,12 +1,11 @@
 package Dao;
 
 import Core.Db;
+import Entity.Hotel;
 import Entity.Season;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class SeasonDao {
@@ -21,8 +20,8 @@ public class SeasonDao {
         Season object = new Season();
         object.setSeasonId(resultSet.getInt("season_id"));
         object.setHotelId(resultSet.getInt("hotel_id"));
-        object.setSeasonStartDate(resultSet.getString("season_start_date"));
-        object.setSeasonEndDate(resultSet.getString("season_end_date"));
+        object.setSeasonStartDate(LocalDate.parse(resultSet.getString("season_start_date")));
+        object.setSeasonEndDate(LocalDate.parse(resultSet.getString("season_end_date")));
         object.setSeasonName(resultSet.getString("season_name"));
         return object;
     }
@@ -56,8 +55,8 @@ public class SeasonDao {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setInt(1, season.getHotelId());
-            preparedStatement.setString(2, season.getSeasonStartDate());
-            preparedStatement.setString(3, season.getSeasonEndDate());
+            preparedStatement.setDate(2, Date.valueOf(season.getSeasonStartDate()));
+            preparedStatement.setDate(3, Date.valueOf(season.getSeasonEndDate()));
             preparedStatement.setString(4, season.getSeasonName());
 
             return preparedStatement.executeUpdate() != -1;
@@ -79,8 +78,8 @@ public class SeasonDao {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setInt(1, season.getHotelId());
-            preparedStatement.setString(2, season.getSeasonStartDate());
-            preparedStatement.setString(3, season.getSeasonEndDate());
+            preparedStatement.setDate(2, Date.valueOf(season.getSeasonStartDate()));
+            preparedStatement.setDate(3, Date.valueOf(season.getSeasonEndDate()));
             preparedStatement.setString(4, season.getSeasonName());
             preparedStatement.setInt(5, season.getSeasonId());
 
