@@ -1,7 +1,6 @@
 package Dao;
 
 import Core.Db;
-import Entity.Hotel;
 import Entity.Season;
 
 import java.sql.Connection;

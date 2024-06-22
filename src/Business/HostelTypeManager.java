@@ -2,9 +2,7 @@ package Business;
 
 import Core.Helper;
 import Dao.HostelTypeDao;
-import Dao.HotelDao;
 import Entity.HostelType;
-import Entity.Hotel;
 
 import java.util.ArrayList;
 
