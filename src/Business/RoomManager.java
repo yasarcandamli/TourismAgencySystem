@@ -1,16 +1,23 @@
 package Business;
 
 import Core.Helper;
+import Dao.HostelTypeDao;
 import Dao.RoomDao;
+import Dao.SeasonDao;
 import Entity.Room;
+import Entity.Season;
 
 import java.util.ArrayList;
 
 public class RoomManager {
     private final RoomDao roomDao;
+    private final SeasonDao seasonDao;
+    private final HostelTypeDao hostelTypeDao;
 
     public RoomManager() {
         this.roomDao = new RoomDao();
+        this.seasonDao = new SeasonDao();
+        this.hostelTypeDao = new HostelTypeDao();
     }
 
     public ArrayList<Room> findAll() {
@@ -51,8 +58,8 @@ public class RoomManager {
             Object[] rowObject = new Object[size];
             int i = 0;
             rowObject[i++] = object.getRoomId();
-            rowObject[i++] = object.getSeasonId();
-            rowObject[i++] = object.getHostelTypeId();
+            rowObject[i++] = this.seasonDao.getById(object.getSeasonId()).getSeasonName();
+            rowObject[i++] = this.hostelTypeDao.getById(object.getHostelTypeId()).getHostelType();
             rowObject[i++] = object.getRoomType();
             rowObject[i++] = object.getBedNumber();
             rowObject[i++] = object.getRoomArea();
