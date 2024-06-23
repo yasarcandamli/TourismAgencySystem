@@ -1,9 +1,12 @@
 package View;
 
 import Business.HotelManager;
+import Business.RoomManager;
+import Business.SeasonManager;
 import Business.UserManager;
 import Core.Helper;
 import Entity.Hotel;
+import Entity.Room;
 import Entity.User;
 
 import javax.swing.*;
@@ -29,23 +32,40 @@ public class StaffView extends Layout {
     private JTextField fld_city_district_hotel_room_search;
     private JFormattedTextField fld_checkin_date_room_search;
     private JFormattedTextField fld_checkout_date_room_search;
-    private JComboBox cmb_adult_number;
-    private JComboBox cmb_child_number;
     private JButton btn_filter_room_search;
     private JButton btn_clear_room_search;
     private JTable tbl_room_search;
     private JScrollPane scrl_room_search;
+    private JPanel pnl_new_reservation;
+    private JTable tbl_new_reservation;
+    private JScrollPane scrl_new_reservation;
+    private JPanel pnl_top;
+    private JTextField fld_address_hotel_name_new_reservation;
+    private JButton btn_filter_new_reservation;
+    private JButton btn_clear_new_reservation;
+    private JFormattedTextField fld_check_in_date_new_reservation;
+    private JFormattedTextField fld_check_out_date_new_reservation;
     private User user;
     private UserManager userManager;
     private HotelManager hotelManager;
+    private RoomManager roomManager;
+    private SeasonManager seasonManager;
     private Object[] col_hotel;
+    private Object[] col_room_search;
+    private Object[] col_new_reservation;
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
+    private DefaultTableModel tmdl_room_search = new DefaultTableModel();
+    private DefaultTableModel tmdl_new_reservation = new DefaultTableModel();
     private JPopupMenu hotel_menu;
+    private JPopupMenu room_search_menu;
+    private JPopupMenu new_reservation_menu;
 
     public StaffView(User user) {
         this.user = user;
         this.userManager = new UserManager();
         this.hotelManager = new HotelManager();
+        this.roomManager = new RoomManager();
+        this.seasonManager = new SeasonManager();
         this.add(container);
         this.guiInitialize(1000, 500);
 
@@ -62,19 +82,122 @@ public class StaffView extends Layout {
         loadHotelTable(null);
         loadTableComponent();
 
-        //Room Search
+        //All Rooms
+        loadRoomSearchTable(null);
+        loadRoomSearchComponent();
 
+        //New Resrvation
+        loadNewReservationTable(null);
+        loadNewReservationComponent();
     }
 
-    private void loadComponent() {
-        this.btn_log_out.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                LoginView loginView = new LoginView();
-            }
+    public void loadNewReservationTable(ArrayList<Object[]> roomList) {
+        this.col_new_reservation = new Object[]{"Room ID", "Hotel Name", "Address", "Room Type", "Hostel Type", "Season", "Bed Number", "Room Area (m2)", "Room Number", "Adult Price", "Child Price", "TV", "Minibar", "Game Console", "Safe Box", "Projection"};
+        if (roomList == null) {
+            roomList = this.roomManager.getForTableRoomSearch(col_new_reservation.length, this.roomManager.findAll()); //Transfer all users to the table with methods in HotelManager
+        }
+        createTable(this.tmdl_new_reservation, this.tbl_new_reservation, col_new_reservation, roomList);
+    }
+
+    public void loadNewReservationComponent() {
+        this.new_reservation_menu = new JPopupMenu();
+        this.selectRow(this.tbl_new_reservation, this.new_reservation_menu);
+
+        this.new_reservation_menu.add("Make a Reservation").addActionListener(e -> {
+
+        });
+        this.tbl_new_reservation.setComponentPopupMenu(new_reservation_menu);
+
+        btn_filter_new_reservation.addActionListener(e -> {
+            ArrayList<Room> roomList = this.roomManager.searchForNewReservation(
+                    fld_check_in_date_new_reservation.getText(),
+                    fld_check_out_date_new_reservation.getText(),
+                    fld_address_hotel_name_new_reservation.getText());
+            ArrayList<Object[]> roomSearchRow = this.roomManager.getForTableRoomSearch(this.col_new_reservation.length, roomList);
+            loadNewReservationTable(roomSearchRow);
+        });
+
+        btn_clear_new_reservation.addActionListener(e -> {
+//            if (Helper.isFormattedFieldListEmpty(new JFormattedTextField[] {this.fld_check_in_date_new_reservation, this.fld_check_out_date_new_reservation})) {
+//                Helper.showMessage("fill");
+//            }
+            fld_address_hotel_name_new_reservation.setText(null);
+            loadNewReservationTable(null);
         });
     }
+
+    public void loadRoomSearchTable(ArrayList<Object[]> roomList) {
+        this.col_room_search = new Object[]{"Room ID", "Hotel Name", "Address", "Room Type", "Hostel Type", "Season", "Bed Number", "Room Area (m2)", "Room Number", "Adult Price", "Child Price", "TV", "Minibar", "Game Console", "Safe Box", "Projection"};
+        if (roomList == null) {
+            roomList = this.roomManager.getForTableRoomSearch(col_room_search.length, this.roomManager.findAll()); //Transfer all users to the table with methods in HotelManager
+        }
+        createTable(this.tmdl_room_search, this.tbl_room_search, col_room_search, roomList);
+    }
+
+    public void loadRoomSearchComponent() {
+        this.room_search_menu = new JPopupMenu();
+        this.selectRow(this.tbl_room_search, this.room_search_menu);
+
+//        this.room_search_menu.add("Make a Reservation").addActionListener(e -> {
+//
+//        });
+        this.tbl_room_search.setComponentPopupMenu(room_search_menu);
+
+        btn_filter_room_search.addActionListener(e -> {
+            ArrayList<Room> roomList = this.roomManager.searchForRoomSearch(
+//                    fld_checkin_date_room_search.getText(),
+//                    fld_checkout_date_room_search.getText(),
+                    fld_city_district_hotel_room_search.getText());
+            ArrayList<Object[]> roomSearchRow = this.roomManager.getForTableRoomSearch(this.col_room_search.length, roomList);
+            loadRoomSearchTable(roomSearchRow);
+        });
+
+        btn_clear_room_search.addActionListener(e -> {
+            fld_city_district_hotel_room_search.setText(null);
+//            fld_checkin_date_room_search.setText(null);
+//            fld_checkout_date_room_search.setText(null);
+            loadRoomSearchTable(null);
+        });
+    }
+
+//    public void loadRoomSearchComponent() {
+//        this.room_search_menu = new JPopupMenu();
+//        this.selectRow(this.tbl_room_search, this.room_search_menu);
+//
+//        btn_filter_room_search.addActionListener(e -> {
+//            String cityDistrictHotelName = fld_city_district_hotel_room_search.getText();
+//            LocalDate checkIn = LocalDate.parse(fld_checkin_date_room_search.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+//            LocalDate checkOut = LocalDate.parse(fld_checkout_date_room_search.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+//
+//            LocalDate checkInDate = null;
+//            LocalDate checkOutDate = null;
+//            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//
+//            String query = "SELECT * FROM hotel WHERE name LIKE '%(name)%' OR address LIKE '%(address)%'";
+//            query = query.replace("(name)", cityDistrictHotelName);
+//            query = query.replace("(address)", cityDistrictHotelName);
+//            ArrayList<Hotel> searchHotel = this.hotelManager.selectByQuery(query);
+//
+//            ArrayList<Room> temporaryRoomList = new ArrayList<>();
+//
+//            for (Hotel hotel : searchHotel) {
+//                for (Room room : this.roomManager.findAll()) {
+//                    if (room.getHotelId() == hotel.getHotelId() && room.getRoomNumber() > 0) { // Oda stok kontrolü yapılıyor
+//                        temporaryRoomList.add(room);
+//                    }
+//                }
+//            }
+//            ArrayList<Room> searchingRoomList = new ArrayList<>();
+//            for (Room room : temporaryRoomList) {
+//                Season temporarySeason = this.seasonManager.getById(room.getRoomId());
+//
+//                if (checkInDate.isAfter(this.seasonManager.getById(room.getSeasonId()).getSeasonStartDate()) && checkInDate.isAfter(this.seasonManager.getById(room.getSeasonId()).getSeasonEndDate())) {
+//                    searchingRoomList.add(room);
+//                }
+//            }
+//            loadRoomSearchTable(searchingRoomList); // Değerlendirme 14 : Uygun odalar listelenip kullanıcıya gösteriliyor
+//        });
+//    }
 
     public void loadHotelTable(ArrayList<Object[]> hotelList) {
         this.col_hotel = new Object[]{"Hotel ID", "Name", "City", "District", "Address", "E-Mail", "Phone Number", "Star", "Facilities"};
@@ -133,8 +256,24 @@ public class StaffView extends Layout {
         this.tbl_hotel.setComponentPopupMenu(hotel_menu); //Integrating pop-up menu in the table
     }
 
-    private void createUIComponents() throws ParseException {
+    public void createUIComponents() throws ParseException {
         this.fld_checkin_date_room_search = new JFormattedTextField(new MaskFormatter("##/##/####"));
+        this.fld_checkin_date_room_search.setText("02/05/2025");
         this.fld_checkout_date_room_search = new JFormattedTextField(new MaskFormatter("##/##/####"));
+        this.fld_checkout_date_room_search.setText("08/05/2025");
+        this.fld_check_in_date_new_reservation = new JFormattedTextField(new MaskFormatter("##/##/####"));
+        this.fld_check_in_date_new_reservation.setText("02/05/2025");
+        this.fld_check_out_date_new_reservation = new JFormattedTextField(new MaskFormatter("##/##/####"));
+        this.fld_check_out_date_new_reservation.setText("08/05/2025");
+    }
+
+    public void loadComponent() {
+        this.btn_log_out.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                LoginView loginView = new LoginView();
+            }
+        });
     }
 }

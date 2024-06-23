@@ -172,13 +172,13 @@ public class RoomDao {
         return object;
     }
 
-    public boolean reduceRemainingRoomNumber(int id) {
-        int remainingRoomNumber = getById(id).getRoomNumber();
-        String query = "UPDATE room SET remaining_room_number = ? WHERE id = ?";
+    public boolean reduceRoomNumber(int roomId) {
+        int roomNumber = getById(roomId).getRoomNumber();
+        String query = "UPDATE room SET room_number = ? WHERE room_id = ?";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement.setInt(1, remainingRoomNumber - 1);
-            preparedStatement.setInt(2, id);
+            preparedStatement.setInt(1, roomNumber - 1);
+            preparedStatement.setInt(2, roomId);
             return preparedStatement.executeUpdate() != -1;
         } catch (SQLException e) {
             e.printStackTrace();

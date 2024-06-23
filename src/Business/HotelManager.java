@@ -18,6 +18,10 @@ public class HotelManager {
         return hotelDao.findAll();
     }
 
+    public ArrayList<Hotel> selectByQuery(String query) {
+        return hotelDao.selectByQuery(query);
+    }
+
     public boolean add(Hotel hotel) {
         if (hotel.getHotelId() != 0) {
             Helper.showMessage("error");

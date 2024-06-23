@@ -66,10 +66,21 @@ public class Helper {
         return field.getText().trim().isEmpty();
     }
 
+    public static boolean isFormattedFieldEmpty(JFormattedTextField field) {
+        return field.getText().replace("/", "").trim().isEmpty();
+    }
+
     //Querying whether text fields are empty or not
     public static boolean isFieldListEmpty(JTextField[] fieldList) {
         for (JTextField field : fieldList) {
             if (isFieldEmpty(field)) return true;
+        }
+        return false;
+    }
+
+    public static boolean isFormattedFieldListEmpty(JFormattedTextField[] fieldList) {
+        for (JFormattedTextField field : fieldList) {
+            if (isFormattedFieldEmpty(field)) return true;
         }
         return false;
     }
