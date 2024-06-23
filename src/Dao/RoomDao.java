@@ -42,6 +42,10 @@ public class RoomDao {
         return this.selectByQuery("SELECT * FROM public.room ORDER BY room_id ASC;");
     }
 
+    public ArrayList<Room> findAllForTable(int hotelId) {
+        return this.selectByQuery("SELECT * FROM public.room WHERE hotel_id = "+ hotelId +" ORDER BY room_id ASC;");
+    }
+
     public ArrayList<Room> selectByQuery(String query) {
         ArrayList<Room> roomList = new ArrayList<>();
         try {

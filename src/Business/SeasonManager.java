@@ -19,6 +19,10 @@ public class SeasonManager {
         return seasonDao.findAll();
     }
 
+    public ArrayList<Season> findAllForTable(int hotelId) {
+        return seasonDao.findAllforTable(hotelId);
+    }
+
     public boolean add(Season season) {
         if (season.getSeasonId() != 0) {
             Helper.showMessage("error");

@@ -18,6 +18,10 @@ public class HostelTypeManager {
         return hostelTypeDao.findAll();
     }
 
+    public ArrayList<HostelType> findAllForTable(int hotelId) {
+        return hostelTypeDao.findAllForTable(hotelId);
+    }
+
     public boolean add(Hotel hotel, String hostelType) {
         if (this.getByName(hostelType) != null){
             Helper.showMessage("Already Exist!");

@@ -105,7 +105,7 @@ public class HotelDetailView extends Layout {
 
     private void loadHotelRoomTable() {
         Object[] column_hotel_room = {"Room ID", "Season", "Hostel Type", "Room Type", "Bed Number", "Room Area (m2)", "Room Number", "Adult Price", "Child Price", "TV", "Minibar", "Game Console", "Safe Box", "Projection"};
-        ArrayList<Object[]> hotelRoomList = this.roomManager.getForTable(column_hotel_room.length, this.roomManager.findAll());
+        ArrayList<Object[]> hotelRoomList = this.roomManager.getForTable(column_hotel_room.length, this.roomManager.findAllForTable(this.hotel.getHotelId()));
         this.createTable(this.tmdl_hotel_room, this.tbl_hotel_room, column_hotel_room, hotelRoomList);
     }
 
@@ -131,10 +131,10 @@ public class HotelDetailView extends Layout {
         buttonGroup.add(this.rbtn_junior_suite_hotel_room);
         buttonGroup.add(this.rbtn_suite_hotel_room);
 
-        for (Season season : this.seasonManager.findAll()) {
+        for (Season season : this.seasonManager.findAllForTable(this.hotel.getHotelId())) {
             this.cmb_season_hotel_room.addItem(new ComboItem(season.getSeasonId(), season.getSeasonName()));
         }
-        for (HostelType hostelType : this.hostelTypeManager.findAll()) {
+        for (HostelType hostelType : this.hostelTypeManager.findAllForTable(this.hotel.getHotelId())) {
             this.cmb_hostel_type_hotel_room.addItem(new ComboItem(hostelType.getHostelTypeId(), hostelType.getHostelType()));
         }
 
@@ -192,7 +192,7 @@ public class HotelDetailView extends Layout {
 
     private void loadHostelTypeTable() {
         Object[] column_season = {"Hostel Type ID", "Hotel ID", "Hostel Type"};
-        ArrayList<Object[]> hostelTypeList = this.hostelTypeManager.getForTable(column_season.length, this.hostelTypeManager.findAll());
+        ArrayList<Object[]> hostelTypeList = this.hostelTypeManager.getForTable(column_season.length, this.hostelTypeManager.findAllForTable(this.hotel.getHotelId()));
         this.createTable(this.tmdl_hostel_type, this.tbl_hostel_type, column_season, hostelTypeList);
     }
 
@@ -253,7 +253,7 @@ public class HotelDetailView extends Layout {
 
     private void loadSeasonTable() {
         Object[] column_hostel_type = {"Season ID", "Hotel ID", "Season Start Date", "Season End Date", "Season Name"};
-        ArrayList<Object[]> seasonList = this.seasonManager.getForTable(column_hostel_type.length, this.seasonManager.findAll());
+        ArrayList<Object[]> seasonList = this.seasonManager.getForTable(column_hostel_type.length, this.seasonManager.findAllForTable(this.hotel.getHotelId()));
         this.createTable(this.tmdl_season, this.tbl_season, column_hostel_type, seasonList);
     }
 

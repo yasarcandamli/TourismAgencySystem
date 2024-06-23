@@ -30,6 +30,10 @@ public class HostelTypeDao {
         return this.selectByQuery("SELECT * FROM public.hostel_type ORDER BY hotel_id ASC;");
     }
 
+    public ArrayList<HostelType> findAllForTable(int hotelId) {
+        return this.selectByQuery("SELECT * FROM public.hostel_type WHERE hotel_id = "+ hotelId +" ORDER BY hotel_id ASC;");
+    }
+
     public ArrayList<HostelType> selectByQuery(String query) {
         ArrayList<HostelType> hostelTypeList = new ArrayList<>();
         try {

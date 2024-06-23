@@ -30,6 +30,10 @@ public class SeasonDao {
         return this.selectByQuery("SELECT * FROM public.season ORDER BY hotel_id ASC;");
     }
 
+    public ArrayList<Season> findAllforTable(int hotelId) {
+        return this.selectByQuery("SELECT * FROM public.season WHERE hotel_id = "+ hotelId +" ORDER BY hotel_id ASC;");
+    }
+
     public ArrayList<Season> selectByQuery(String query) {
         ArrayList<Season> seasonList = new ArrayList<>();
         try {

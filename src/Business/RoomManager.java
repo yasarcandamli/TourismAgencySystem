@@ -24,6 +24,10 @@ public class RoomManager {
         return roomDao.findAll();
     }
 
+    public ArrayList<Room> findAllForTable(int hotelId) {
+        return roomDao.findAllForTable(hotelId);
+    }
+
     public boolean add(Room room, String roomType) {
         if (room.getRoomId() != 0) {
             Helper.showMessage("error");

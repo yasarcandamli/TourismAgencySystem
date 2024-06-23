@@ -8,18 +8,33 @@ import Entity.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class StaffView extends Layout {
     private JPanel container;
     private JPanel pnl_staff_top;
-    private JButton logOutButton;
+    private JButton btn_log_out;
     private JTabbedPane tab_menu;
     private JTable tbl_hotel;
     private JScrollPane scrl_hotel;
     private JLabel lbl_staff_welcome;
+    private JPanel pnl_hotel_management;
+    private JPanel pnl_room_search;
+    private JTextField fld_city_district_hotel_room_search;
+    private JFormattedTextField fld_checkin_date_room_search;
+    private JFormattedTextField fld_checkout_date_room_search;
+    private JComboBox cmb_adult_number;
+    private JComboBox cmb_child_number;
+    private JButton btn_filter_room_search;
+    private JButton btn_clear_room_search;
+    private JTable tbl_room_search;
+    private JScrollPane scrl_room_search;
     private User user;
     private UserManager userManager;
     private HotelManager hotelManager;
@@ -40,8 +55,25 @@ public class StaffView extends Layout {
 
         this.lbl_staff_welcome.setText("Welcome: " + this.user.getUserName());
 
+        //General
+        loadComponent();
+
+        //Hotel Management
         loadHotelTable(null);
         loadTableComponent();
+
+        //Room Search
+
+    }
+
+    private void loadComponent() {
+        this.btn_log_out.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                LoginView loginView = new LoginView();
+            }
+        });
     }
 
     public void loadHotelTable(ArrayList<Object[]> hotelList) {
@@ -99,5 +131,10 @@ public class StaffView extends Layout {
         });
 
         this.tbl_hotel.setComponentPopupMenu(hotel_menu); //Integrating pop-up menu in the table
+    }
+
+    private void createUIComponents() throws ParseException {
+        this.fld_checkin_date_room_search = new JFormattedTextField(new MaskFormatter("##/##/####"));
+        this.fld_checkout_date_room_search = new JFormattedTextField(new MaskFormatter("##/##/####"));
     }
 }
