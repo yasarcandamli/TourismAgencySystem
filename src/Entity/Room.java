@@ -5,27 +5,42 @@ public class Room {
     private int hotelId;
     private int seasonId;
     private int hostelTypeId;
-    private int bedNumber;
     private String roomType;
-    private int remainingRoomNumber;
+    private int bedNumber;
+    private int roomArea;
+    private int roomNumber;
     private int adultPrice;
     private int childPrice;
-    private String roomFeatures;
+    private isThere tv;
+    private isThere minibar;
+    private isThere gameConsole;
+    private isThere safeBox;
+    private isThere projection;
+
+    public enum isThere{
+        Yes,
+        No
+    }
 
     public Room() {
     }
 
-    public Room(int roomId, int hotelId, int seasonId, int hostelTypeId, int bedNumber, String roomType, int remainingRoomNumber, int adultPrice, int childPrice, String roomFeatures) {
+    public Room(int roomId, int hotelId, int seasonId, int hostelTypeId, String roomType, int bedNumber, int roomArea, int roomNumber, int adultPrice, int childPrice, isThere tv, isThere minibar, isThere gameConsole, isThere safeBox, isThere projection) {
         this.roomId = roomId;
         this.hotelId = hotelId;
         this.seasonId = seasonId;
         this.hostelTypeId = hostelTypeId;
-        this.bedNumber = bedNumber;
         this.roomType = roomType;
-        this.remainingRoomNumber = remainingRoomNumber;
+        this.bedNumber = bedNumber;
+        this.roomArea = roomArea;
+        this.roomNumber = roomNumber;
         this.adultPrice = adultPrice;
         this.childPrice = childPrice;
-        this.roomFeatures = roomFeatures;
+        this.tv = tv;
+        this.minibar = minibar;
+        this.gameConsole = gameConsole;
+        this.safeBox = safeBox;
+        this.projection = projection;
     }
 
     public int getRoomId() {
@@ -60,14 +75,6 @@ public class Room {
         this.hostelTypeId = hostelTypeId;
     }
 
-    public int getBedNumber() {
-        return bedNumber;
-    }
-
-    public void setBedNumber(int bedNumber) {
-        this.bedNumber = bedNumber;
-    }
-
     public String getRoomType() {
         return roomType;
     }
@@ -76,12 +83,28 @@ public class Room {
         this.roomType = roomType;
     }
 
-    public int getRemainingRoomNumber() {
-        return remainingRoomNumber;
+    public int getBedNumber() {
+        return bedNumber;
     }
 
-    public void setRemainingRoomNumber(int remainingRoomNumber) {
-        this.remainingRoomNumber = remainingRoomNumber;
+    public void setBedNumber(int bedNumber) {
+        this.bedNumber = bedNumber;
+    }
+
+    public int getRoomArea() {
+        return roomArea;
+    }
+
+    public void setRoomArea(int roomArea) {
+        this.roomArea = roomArea;
+    }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public int getAdultPrice() {
@@ -100,11 +123,43 @@ public class Room {
         this.childPrice = childPrice;
     }
 
-    public String getRoomFeatures() {
-        return roomFeatures;
+    public isThere getTv() {
+        return tv;
     }
 
-    public void setRoomFeatures(String roomFeatures) {
-        this.roomFeatures = roomFeatures;
+    public void setTv(isThere tv) {
+        this.tv = tv;
+    }
+
+    public isThere getMinibar() {
+        return minibar;
+    }
+
+    public void setMinibar(isThere minibar) {
+        this.minibar = minibar;
+    }
+
+    public isThere getGameConsole() {
+        return gameConsole;
+    }
+
+    public void setGameConsole(isThere gameConsole) {
+        this.gameConsole = gameConsole;
+    }
+
+    public isThere getSafeBox() {
+        return safeBox;
+    }
+
+    public void setSafeBox(isThere safeBox) {
+        this.safeBox = safeBox;
+    }
+
+    public isThere getProjection() {
+        return projection;
+    }
+
+    public void setProjection(isThere projection) {
+        this.projection = projection;
     }
 }

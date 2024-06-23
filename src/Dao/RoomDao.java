@@ -23,12 +23,18 @@ public class RoomDao {
         object.setHotelId(resultSet.getInt("hotel_id"));
         object.setSeasonId(resultSet.getInt("season_id"));
         object.setHostelTypeId(resultSet.getInt("hostel_type_id"));
-        object.setBedNumber(resultSet.getInt("bed_number"));
         object.setRoomType(resultSet.getString("room_type"));
-        object.setRemainingRoomNumber(resultSet.getInt("remaining_room_number"));
+        object.setBedNumber(resultSet.getInt("bed_number"));
+        object.setRoomArea(resultSet.getInt("room_area"));
+        object.setRoomNumber(resultSet.getInt("room_number"));
         object.setAdultPrice(resultSet.getInt("adult_price"));
         object.setChildPrice(resultSet.getInt("child_price"));
-        object.setRoomFeatures(resultSet.getString("room_features"));
+        object.setTv(Room.isThere.valueOf(resultSet.getString("tv")));
+        object.setMinibar(Room.isThere.valueOf(resultSet.getString("minibar")));
+        object.setGameConsole(Room.isThere.valueOf(resultSet.getString("game_console")));
+        object.setSafeBox(Room.isThere.valueOf(resultSet.getString("safe_box")));
+        object.setProjection(Room.isThere.valueOf(resultSet.getString("projection")));
+
         return object;
     }
 
@@ -49,31 +55,41 @@ public class RoomDao {
         return roomList;
     }
 
-    public boolean add(Room room) {
+    public boolean add(Room room, String roomType) {
         String query = "INSERT INTO public.room " +
                 "(" +
                 "hotel_id, " +
                 "season_id, " +
                 "hostel_type_id, " +
-                "bed_number, " +
                 "room_type, " +
-                "remaining_room_number, " +
+                "bed_number, " +
+                "room_area, " +
+                "room_number, " +
                 "adult_price, " +
                 "child_price, " +
-                "room_features" +
+                "tv, " +
+                "minibar, " +
+                "game_console, " +
+                "safe_box, " +
+                "projection" +
                 ")" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setInt(1, room.getHotelId());
             preparedStatement.setInt(2, room.getSeasonId());
             preparedStatement.setInt(3, room.getHostelTypeId());
-            preparedStatement.setInt(4, room.getBedNumber());
-            preparedStatement.setString(5, room.getRoomType());
-            preparedStatement.setInt(6, room.getRemainingRoomNumber());
-            preparedStatement.setInt(7, room.getAdultPrice());
-            preparedStatement.setInt(8, room.getChildPrice());
-            preparedStatement.setString(9, room.getRoomFeatures());
+            preparedStatement.setString(4, roomType);
+            preparedStatement.setInt(5, room.getBedNumber());
+            preparedStatement.setInt(6, room.getRoomArea());
+            preparedStatement.setInt(7, room.getRoomNumber());
+            preparedStatement.setInt(8, room.getAdultPrice());
+            preparedStatement.setInt(9, room.getChildPrice());
+            preparedStatement.setString(10, room.getTv().toString());
+            preparedStatement.setString(11, room.getMinibar().toString());
+            preparedStatement.setString(12, room.getGameConsole().toString());
+            preparedStatement.setString(13, room.getSafeBox().toString());
+            preparedStatement.setString(14, room.getProjection().toString());
 
             return preparedStatement.executeUpdate() != -1;
         } catch (SQLException e) {
@@ -89,11 +105,15 @@ public class RoomDao {
                 "season_id = ?, " +
                 "hostel_type_id = ?, " +
                 "bed_number = ?, " +
-                "room_type = ?, " +
-                "remaining_room_number = ?, " +
+                "room_area = ?, " +
+                "room_number = ?, " +
                 "adult_price = ?, " +
+                "tv = ?, " +
+                "minibar = ?, " +
+                "game_console = ?, " +
+                "safe_box = ?, " +
                 "child_price = ?, " +
-                "room_features = ? " +
+                "projection = ? " +
                 ")" +
                 "WHERE room_id = ?;";
         try {
@@ -101,13 +121,18 @@ public class RoomDao {
             preparedStatement.setInt(1, room.getHotelId());
             preparedStatement.setInt(2, room.getSeasonId());
             preparedStatement.setInt(3, room.getHostelTypeId());
-            preparedStatement.setInt(4, room.getBedNumber());
-            preparedStatement.setString(5, room.getRoomType());
-            preparedStatement.setInt(6, room.getRemainingRoomNumber());
-            preparedStatement.setInt(7, room.getAdultPrice());
-            preparedStatement.setInt(8, room.getChildPrice());
-            preparedStatement.setString(9, room.getRoomFeatures());
-            preparedStatement.setInt(10, room.getRoomId());
+            preparedStatement.setString(4, room.getRoomType());
+            preparedStatement.setInt(5, room.getBedNumber());
+            preparedStatement.setInt(6, room.getRoomArea());
+            preparedStatement.setInt(7, room.getRoomNumber());
+            preparedStatement.setInt(8, room.getAdultPrice());
+            preparedStatement.setInt(9, room.getChildPrice());
+            preparedStatement.setString(10, room.getTv().toString());
+            preparedStatement.setString(11, room.getMinibar().toString());
+            preparedStatement.setString(12, room.getGameConsole().toString());
+            preparedStatement.setString(13, room.getSafeBox().toString());
+            preparedStatement.setString(14, room.getProjection().toString());
+            preparedStatement.setInt(15, room.getRoomId());
 
             return preparedStatement.executeUpdate() != -1;
         } catch (SQLException e) {
@@ -144,7 +169,7 @@ public class RoomDao {
     }
 
     public boolean reduceRemainingRoomNumber(int id) {
-        int remainingRoomNumber = getById(id).getRemainingRoomNumber();
+        int remainingRoomNumber = getById(id).getRoomNumber();
         String query = "UPDATE room SET remaining_room_number = ? WHERE id = ?";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);

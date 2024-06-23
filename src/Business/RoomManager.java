@@ -17,11 +17,11 @@ public class RoomManager {
         return roomDao.findAll();
     }
 
-    public boolean add(Room room) {
+    public boolean add(Room room, String roomType) {
         if (room.getRoomId() != 0) {
             Helper.showMessage("error");
         }
-        return this.roomDao.add(room);
+        return this.roomDao.add(room, roomType);
     }
 
     public boolean update(Room room) {
@@ -51,15 +51,19 @@ public class RoomManager {
             Object[] rowObject = new Object[size];
             int i = 0;
             rowObject[i++] = object.getRoomId();
-            rowObject[i++] = object.getHotelId();
             rowObject[i++] = object.getSeasonId();
             rowObject[i++] = object.getHostelTypeId();
-            rowObject[i++] = object.getBedNumber();
             rowObject[i++] = object.getRoomType();
-            rowObject[i++] = object.getRemainingRoomNumber();
+            rowObject[i++] = object.getBedNumber();
+            rowObject[i++] = object.getRoomArea();
+            rowObject[i++] = object.getRoomNumber();
             rowObject[i++] = object.getAdultPrice();
             rowObject[i++] = object.getChildPrice();
-            rowObject[i++] = object.getRoomFeatures();
+            rowObject[i++] = object.getTv();
+            rowObject[i++] = object.getMinibar();
+            rowObject[i++] = object.getGameConsole();
+            rowObject[i++] = object.getSafeBox();
+            rowObject[i++] = object.getProjection();
             roomObjectList.add(rowObject);
         }
         return roomObjectList;

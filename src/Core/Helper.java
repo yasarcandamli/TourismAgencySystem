@@ -13,8 +13,8 @@ public class Helper {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+                break;
             }
-            break;
         }
     }
 
