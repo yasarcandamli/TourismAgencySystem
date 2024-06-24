@@ -1,9 +1,6 @@
 package View;
 
-import Business.HotelManager;
-import Business.RoomManager;
-import Business.SeasonManager;
-import Business.UserManager;
+import Business.*;
 import Core.Helper;
 import Entity.Hotel;
 import Entity.Room;
@@ -45,20 +42,32 @@ public class StaffView extends Layout {
     private JButton btn_clear_new_reservation;
     private JFormattedTextField fld_check_in_date_new_reservation;
     private JFormattedTextField fld_check_out_date_new_reservation;
+    private JTextField fld_address_hotel_name_reservations;
+    private JButton btn_filter_reservations;
+    private JButton btn_clear_reservations;
+    private JScrollPane scrl_reservations;
+    private JPanel pnl_reservations_top;
+    private JTable tbl_reservations;
+    private JFormattedTextField fld_check_in_date_reservations;
+    private JFormattedTextField fld_check_out_date_reservations;
     private User user;
     private UserManager userManager;
     private HotelManager hotelManager;
     private RoomManager roomManager;
     private SeasonManager seasonManager;
+    private ReservationManager reservationManager;
     private Object[] col_hotel;
     private Object[] col_room_search;
     private Object[] col_new_reservation;
+    private Object[] col_reservations;
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
     private DefaultTableModel tmdl_room_search = new DefaultTableModel();
     private DefaultTableModel tmdl_new_reservation = new DefaultTableModel();
+    private DefaultTableModel tmdl_reservations = new DefaultTableModel();
     private JPopupMenu hotel_menu;
     private JPopupMenu room_search_menu;
     private JPopupMenu new_reservation_menu;
+    private JPopupMenu reservations_menu;
 
     public StaffView(User user) {
         this.user = user;
@@ -66,8 +75,9 @@ public class StaffView extends Layout {
         this.hotelManager = new HotelManager();
         this.roomManager = new RoomManager();
         this.seasonManager = new SeasonManager();
+        this.reservationManager = new ReservationManager();
         this.add(container);
-        this.guiInitialize(1000, 500);
+        this.guiInitialize(1500, 500);
 
         if (this.user == null) {
             dispose();
@@ -86,13 +96,83 @@ public class StaffView extends Layout {
         loadRoomSearchTable(null);
         loadRoomSearchComponent();
 
-        //New Resrvation
+        //New Reservation
         loadNewReservationTable(null);
         loadNewReservationComponent();
+
+        //Reservations
+        loadReservationsTable(null);
+        loadReservationComponent();
+    }
+
+    public void loadReservationsTable(ArrayList<Object[]> reservationList) {
+        this.col_reservations = new Object[]{
+                "Reservation ID",
+                "Room ID",
+                "Name",
+                "Identity No",
+                "Phone No",
+                "Email",
+                "Check In Date",
+                "Check Out Date",
+                "Adult Number",
+                "Child Number",
+                "Note",
+                "Price"};
+        if (reservationList == null) {
+            reservationList = this.reservationManager.getForTable(col_reservations.length, this.reservationManager.findAll()); //Transfer all users to the table with methods in HotelManager
+        }
+        createTable(this.tmdl_reservations, this.tbl_reservations, col_reservations, reservationList);
+    }
+
+    public void loadReservationComponent() {
+        this.reservations_menu = new JPopupMenu();
+        this.selectRow(this.tbl_reservations, this.reservations_menu);
+
+        this.reservations_menu.add("Update").addActionListener(e -> {
+            int selectReservationId = this.getTableSelectedRow(this.tbl_reservations, 0);
+            UpdateReservationView updateReservationView = new UpdateReservationView(this.reservationManager.getById(selectReservationId));
+            updateReservationView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadReservationsTable(null);
+                }
+            });
+        });
+        this.reservations_menu.add("Delete").addActionListener(e -> {
+            if (Helper.confirm("sure")) {
+                int selectReservationId = this.getTableSelectedRow(tbl_reservations, 0);
+                if (this.reservationManager.delete(selectReservationId)) {
+                    Helper.showMessage("done");
+                    loadReservationsTable(null);
+                } else {
+                    Helper.showMessage("error");
+                }
+            }
+        });
+
+        this.tbl_reservations.setComponentPopupMenu(reservations_menu);
     }
 
     public void loadNewReservationTable(ArrayList<Object[]> roomList) {
-        this.col_new_reservation = new Object[]{"Room ID", "Hotel Name", "Address", "Room Type", "Hostel Type", "Season", "Bed Number", "Room Area (m2)", "Room Number", "Adult Price", "Child Price", "TV", "Minibar", "Game Console", "Safe Box", "Projection"};
+        this.col_new_reservation = new Object[]{"Room ID",
+                "Hotel Name",
+                "Hotel Star",
+                "Address",
+                "Room Type",
+                "Hostel Type",
+                "Season",
+                "Bed Number",
+                "Room Area (m2)",
+                "Room Number",
+                "Adult Price",
+                "Child Price",
+                "Facilities",
+                "TV",
+                "Minibar",
+                "Game Console",
+                "Safe Box",
+                "Projection"};
         if (roomList == null) {
             roomList = this.roomManager.getForTableRoomSearch(col_new_reservation.length, this.roomManager.findAll()); //Transfer all users to the table with methods in HotelManager
         }
@@ -110,6 +190,13 @@ public class StaffView extends Layout {
                     this.fld_check_in_date_new_reservation.getText(),
                     this.fld_check_out_date_new_reservation.getText()
             );
+            makingAReservationView.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadNewReservationTable(null);
+                    loadReservationsTable(null);
+                }
+            });
         });
         this.tbl_new_reservation.setComponentPopupMenu(new_reservation_menu);
 
@@ -132,7 +219,24 @@ public class StaffView extends Layout {
     }
 
     public void loadRoomSearchTable(ArrayList<Object[]> roomList) {
-        this.col_room_search = new Object[]{"Room ID", "Hotel Name", "Address", "Room Type", "Hostel Type", "Season", "Bed Number", "Room Area (m2)", "Room Number", "Adult Price", "Child Price", "TV", "Minibar", "Game Console", "Safe Box", "Projection"};
+        this.col_room_search = new Object[]{"Room ID",
+                "Hotel Name",
+                "Hotel Star",
+                "Address",
+                "Room Type",
+                "Hostel Type",
+                "Season",
+                "Bed Number",
+                "Room Area (m2)",
+                "Room Number",
+                "Adult Price",
+                "Child Price",
+                "Facilities",
+                "TV",
+                "Minibar",
+                "Game Console",
+                "Safe Box",
+                "Projection"};
         if (roomList == null) {
             roomList = this.roomManager.getForTableRoomSearch(col_room_search.length, this.roomManager.findAll()); //Transfer all users to the table with methods in HotelManager
         }

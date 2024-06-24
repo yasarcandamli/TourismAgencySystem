@@ -53,6 +53,7 @@ public class ReservationManager {
             rowObject[i++] = object.getReservationId();
             rowObject[i++] = object.getRoomId();
             rowObject[i++] = object.getCustomerName();
+            rowObject[i++] = object.getCustomerIdentityNumber();
             rowObject[i++] = object.getCustomerPhoneNumber();
             rowObject[i++] = object.getCustomerEmail();
             rowObject[i++] = object.getCheckInDate();

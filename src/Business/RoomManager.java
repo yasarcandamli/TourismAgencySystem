@@ -93,6 +93,7 @@ public class RoomManager {
             int i = 0;
             rowObject[i++] = object.getRoomId();
             rowObject[i++] = this.hotelDao.getById(object.getHotelId()).getHotelName();
+            rowObject[i++] = this.hotelDao.getById(object.getHotelId()).getHotelStar();
             rowObject[i++] = this.hotelDao.getById(object.getHotelId()).getHotelAddress();
             rowObject[i++] = object.getRoomType();
             rowObject[i++] = this.hostelTypeDao.getById(object.getHostelTypeId()).getHostelType();
@@ -102,6 +103,7 @@ public class RoomManager {
             rowObject[i++] = object.getRoomNumber();
             rowObject[i++] = object.getAdultPrice();
             rowObject[i++] = object.getChildPrice();
+            rowObject[i++] = this.hotelDao.getById(object.getHotelId()).getHotelFacility();
             rowObject[i++] = object.getTv();
             rowObject[i++] = object.getMinibar();
             rowObject[i++] = object.getGameConsole();

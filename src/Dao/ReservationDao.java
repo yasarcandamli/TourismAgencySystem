@@ -19,8 +19,8 @@ public class ReservationDao {
         object.setReservationId(resultSet.getInt("reservation_id"));
         object.setRoomId(resultSet.getInt("room_id"));
         object.setCustomerName(resultSet.getString("customer_name"));
-        object.setCustomerName(resultSet.getString("customer_identity_number"));
-        object.setCustomerName(resultSet.getString("customer_phone_number"));
+        object.setCustomerIdentityNumber(resultSet.getString("customer_identity_number"));
+        object.setCustomerPhoneNumber(resultSet.getString("customer_phone_number"));
         object.setCustomerEmail(resultSet.getString("customer_email"));
         object.setCheckInDate(resultSet.getString("check_in_date"));
         object.setCheckOutDate(resultSet.getString("check_out_date"));
@@ -32,7 +32,7 @@ public class ReservationDao {
     }
 
     public ArrayList<Reservation> findAll() {
-        return this.selectByQuery("SELECT * FROM public.reservation ORDER BY hotel_id ASC;");
+        return this.selectByQuery("SELECT * FROM public.reservation ORDER BY reservation_id ASC;");
     }
 
     public ArrayList<Reservation> selectByQuery(String query) {
