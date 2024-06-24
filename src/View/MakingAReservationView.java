@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class MakingAReservationView extends Layout {
     private JPanel container;
@@ -54,14 +55,6 @@ public class MakingAReservationView extends Layout {
         this.fld_check_in_date_reservation_make.setText(checkInDate);
         this.fld_check_out_date_reservation_make.setText(checkOutDate);
 
-        //test için
-//        this.fld_customer_name_reservation_make.setText("Yaşar Can");
-//        this.fld_identity_no_reservation_make.setText("000000000123123");
-//        this.fld_phone_no_reservation_make.setText("000023123");
-//        this.fld_email_reservation_make.setText("test@gmail.com");
-//        this.fld_adult_number_reservation_make.setText("2");
-//        this.fld_child_number_reservation_make.setText("1");
-//        this.tarea_note_reservation_make.setText("NOTE");
         //Dinamik Fiyat Hesaplama
         fld_adult_number_reservation_make.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -140,9 +133,14 @@ public class MakingAReservationView extends Layout {
     //Dinamik hesaplama için
     private void updateTotalPrice() {
         try {
+            LocalDate checkInDate = LocalDate.parse(this.fld_check_in_date_reservation_make.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            LocalDate checkOutDate = LocalDate.parse(this.fld_check_out_date_reservation_make.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            int daysBetween = (int) ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+
             int adultNumber = Integer.parseInt(fld_adult_number_reservation_make.getText());
             int childNumber = Integer.parseInt(fld_child_number_reservation_make.getText());
-            int totalPrice = (adultNumber * this.room.getAdultPrice()) + (childNumber * this.room.getChildPrice());
+
+            int totalPrice = ((adultNumber * this.room.getAdultPrice()) + (childNumber * this.room.getChildPrice())) * (daysBetween);
             fld_total_price_reservation_make.setText(String.valueOf(totalPrice));
         } catch (NumberFormatException e) {
             fld_total_price_reservation_make.setText("0");

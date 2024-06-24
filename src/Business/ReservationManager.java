@@ -3,7 +3,10 @@ package Business;
 import Core.Helper;
 import Dao.ReservationDao;
 import Entity.Reservation;
+import Entity.Room;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ReservationManager {
@@ -65,6 +68,25 @@ public class ReservationManager {
             reservationObjectList.add(rowObject);
         }
         return reservationObjectList;
+    }
+
+    public ArrayList<Reservation> searchForReservation(String customerName, String customerIdentity, String customerPhone) {
+        String query = "SELECT * FROM public.reservation AS re";
+        ArrayList<String> where = new ArrayList<>();
+
+        if (!customerName.isEmpty()) where.add("re.customer_name = '" + customerName + "'");
+        if (!customerIdentity.isEmpty()) where.add("re.customer_identity_number = '" + customerIdentity + "'");
+        if (!customerPhone.isEmpty()) where.add("re.customer_phone_number = '" + customerPhone + "'");
+
+        String whereStr = String.join(" AND ", where);
+
+        System.out.println(customerIdentity);
+        if (whereStr.length() > 0) {
+            query += " WHERE " + whereStr;
+        }
+
+        ArrayList<Reservation> searchedRoomList = this.reservationDao.selectByQuery(query);
+        return searchedRoomList;
     }
 
 //    public ArrayList<Hotel> filterForTable(Hotel.UserType userType) {

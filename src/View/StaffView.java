@@ -3,6 +3,7 @@ package View;
 import Business.*;
 import Core.Helper;
 import Entity.Hotel;
+import Entity.Reservation;
 import Entity.Room;
 import Entity.User;
 
@@ -42,14 +43,16 @@ public class StaffView extends Layout {
     private JButton btn_clear_new_reservation;
     private JFormattedTextField fld_check_in_date_new_reservation;
     private JFormattedTextField fld_check_out_date_new_reservation;
-    private JTextField fld_address_hotel_name_reservations;
-    private JButton btn_filter_reservations;
+    private JTextField fld_customer_name_reservations;
     private JButton btn_clear_reservations;
     private JScrollPane scrl_reservations;
     private JPanel pnl_reservations_top;
     private JTable tbl_reservations;
     private JFormattedTextField fld_check_in_date_reservations;
     private JFormattedTextField fld_check_out_date_reservations;
+    private JTextField fld_customer_identity_number_reservations;
+    private JTextField fld_customer_phone_number_reservations;
+    private JButton btn_filter_reservations;
     private User user;
     private UserManager userManager;
     private HotelManager hotelManager;
@@ -152,6 +155,22 @@ public class StaffView extends Layout {
         });
 
         this.tbl_reservations.setComponentPopupMenu(reservations_menu);
+
+        btn_filter_reservations.addActionListener(e -> {
+            ArrayList<Reservation> reservationList = this.reservationManager.searchForReservation(
+                    fld_customer_name_reservations.getText(),
+                    fld_customer_identity_number_reservations.getText(),
+                    fld_customer_phone_number_reservations.getText());
+            ArrayList<Object[]> reservationsSearchRow = this.reservationManager.getForTable(this.col_reservations.length, reservationList);
+            loadReservationsTable(reservationsSearchRow);
+        });
+
+        btn_clear_reservations.addActionListener(e -> {
+            fld_customer_name_reservations.setText(null);
+            fld_customer_identity_number_reservations.setText(null);
+            fld_customer_phone_number_reservations.setText(null);
+            loadReservationsTable(null);
+        });
     }
 
     public void loadNewReservationTable(ArrayList<Object[]> roomList) {
