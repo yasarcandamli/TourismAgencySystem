@@ -148,6 +148,7 @@ public class StaffView extends Layout {
                 if (this.reservationManager.delete(selectReservationId)) {
                     Helper.showMessage("done");
                     loadReservationsTable(null);
+                    loadNewReservationTable(null);
                 } else {
                     Helper.showMessage("error");
                 }
@@ -193,7 +194,7 @@ public class StaffView extends Layout {
                 "Safe Box",
                 "Projection"};
         if (roomList == null) {
-            roomList = this.roomManager.getForTableRoomSearch(col_new_reservation.length, this.roomManager.findAll()); //Transfer all users to the table with methods in HotelManager
+            roomList = this.roomManager.getForTableRoomSearch(col_new_reservation.length, this.roomManager.findAllAvailableRoom()); //Transfer all users to the table with methods in HotelManager
         }
         createTable(this.tmdl_new_reservation, this.tbl_new_reservation, col_new_reservation, roomList);
     }
@@ -214,6 +215,7 @@ public class StaffView extends Layout {
                 public void windowClosed(WindowEvent e) {
                     loadNewReservationTable(null);
                     loadReservationsTable(null);
+                    roomManager.reduceRoomNumber(selectRoomId);
                 }
             });
         });

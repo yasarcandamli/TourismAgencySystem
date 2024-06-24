@@ -2,6 +2,7 @@ package Business;
 
 import Core.Helper;
 import Dao.ReservationDao;
+import Dao.RoomDao;
 import Entity.Reservation;
 import Entity.Room;
 
@@ -11,9 +12,11 @@ import java.util.ArrayList;
 
 public class ReservationManager {
     private final ReservationDao reservationDao;
+    private final RoomDao roomDao;
 
     public ReservationManager() {
         this.reservationDao = new ReservationDao();
+        this.roomDao = new RoomDao();
     }
 
     public ArrayList<Reservation> findAll() {
@@ -36,6 +39,7 @@ public class ReservationManager {
     }
 
     public boolean delete(int reservationId) {
+//        increaseRoomNumber(getById(reservationId).getRoomId());
         if (this.getById(reservationId) == null) {
             Helper.showMessage("notFound");
             return false;
@@ -87,6 +91,15 @@ public class ReservationManager {
 
         ArrayList<Reservation> searchedRoomList = this.reservationDao.selectByQuery(query);
         return searchedRoomList;
+    }
+
+    // Oda numarasını artırma
+    public void increaseRoomNumber(int roomId) {
+        Room room = this.roomDao.getById(roomId);
+        if (room != null) {
+            room.setRoomNumber(room.getRoomNumber() + 1);
+            this.roomDao.update(room);
+        }
     }
 
 //    public ArrayList<Hotel> filterForTable(Hotel.UserType userType) {

@@ -87,7 +87,6 @@ public class ReservationDao {
 
     public boolean update(Reservation reservation) {
         String query = "UPDATE public.reservation SET " +
-                "(" +
                 "room_id = ?, " +
                 "customer_name = ?, " +
                 "customer_identity_number = ?, " +
@@ -99,7 +98,6 @@ public class ReservationDao {
                 "child_number = ?, " +
                 "customer_note = ?, " +
                 "total_price = ? " +
-                ")" +
                 "WHERE reservation_id = ?;";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);

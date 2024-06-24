@@ -42,6 +42,10 @@ public class RoomDao {
         return this.selectByQuery("SELECT * FROM public.room ORDER BY room_id ASC;");
     }
 
+    public ArrayList<Room> findAllAvailableRoom() {
+        return this.selectByQuery("SELECT * FROM public.room WHERE room_number > 0;");
+    }
+
     public ArrayList<Room> findAllForTable(int hotelId) {
         return this.selectByQuery("SELECT * FROM public.room WHERE hotel_id = "+ hotelId +" ORDER BY room_id ASC;");
     }
@@ -104,21 +108,20 @@ public class RoomDao {
 
     public boolean update(Room room) {
         String query = "UPDATE public.room SET " +
-                "(" +
                 "hotel_id = ?, " +
                 "season_id = ?, " +
                 "hostel_type_id = ?, " +
+                "room_type = ?, " +
                 "bed_number = ?, " +
                 "room_area = ?, " +
                 "room_number = ?, " +
                 "adult_price = ?, " +
+                "child_price = ?, " +
                 "tv = ?, " +
                 "minibar = ?, " +
                 "game_console = ?, " +
                 "safe_box = ?, " +
-                "child_price = ?, " +
                 "projection = ? " +
-                ")" +
                 "WHERE room_id = ?;";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
@@ -170,19 +173,5 @@ public class RoomDao {
             e.printStackTrace();
         }
         return object;
-    }
-
-    public boolean reduceRoomNumber(int roomId) {
-        int roomNumber = getById(roomId).getRoomNumber();
-        String query = "UPDATE room SET room_number = ? WHERE room_id = ?";
-        try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
-            preparedStatement.setInt(1, roomNumber - 1);
-            preparedStatement.setInt(2, roomId);
-            return preparedStatement.executeUpdate() != -1;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
     }
 }

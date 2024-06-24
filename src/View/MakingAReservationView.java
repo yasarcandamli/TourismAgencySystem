@@ -55,7 +55,7 @@ public class MakingAReservationView extends Layout {
         this.fld_check_in_date_reservation_make.setText(checkInDate);
         this.fld_check_out_date_reservation_make.setText(checkOutDate);
 
-        //Dinamik Fiyat Hesaplama
+        //Dynamic day calculation
         fld_adult_number_reservation_make.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -89,7 +89,6 @@ public class MakingAReservationView extends Layout {
                 updateTotalPrice();
             }
         });
-//        this.fld_total_price_reservation_make.setText(String.valueOf((Integer.parseInt(this.fld_adult_number_reservation_make.getText()) * this.room.getAdultPrice()) + (Integer.parseInt(this.fld_child_number_reservation_make.getText()) * this.room.getChildPrice())));
 
         btn_reservation_make.addActionListener(e -> {
             JTextField[] checkFieldList = {
@@ -130,7 +129,7 @@ public class MakingAReservationView extends Layout {
         });
     }
 
-    //Dinamik hesaplama için
+    //Dynamic price calculation
     private void updateTotalPrice() {
         try {
             LocalDate checkInDate = LocalDate.parse(this.fld_check_in_date_reservation_make.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));

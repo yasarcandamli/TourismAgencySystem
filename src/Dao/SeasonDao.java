@@ -72,12 +72,10 @@ public class SeasonDao {
 
     public boolean update(Season season) {
         String query = "UPDATE public.season SET " +
-                "(" +
                 "hotel_id = ?, " +
                 "season_start_date = ?, " +
                 "season_end_date = ?, " +
                 "season_name = ? " +
-                ")" +
                 "WHERE season_id = ?;";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);

@@ -29,6 +29,10 @@ public class RoomManager {
         return roomDao.findAll();
     }
 
+    public ArrayList<Room> findAllAvailableRoom() {
+        return roomDao.findAllAvailableRoom();
+    }
+
     public ArrayList<Room> findAllForTable(int hotelId) {
         return roomDao.findAllForTable(hotelId);
     }
@@ -138,6 +142,7 @@ public class RoomManager {
     public ArrayList<Room> searchForNewReservation(String checkInDate, String checkOutDate, String addressOrName) {
         String query = "SELECT * FROM public.room as r LEFT JOIN public.hotels as h";
         ArrayList<String> where = new ArrayList<>();
+        where.add("room_number > 0");
         ArrayList<String> joinWhere = new ArrayList<>();
         ArrayList<String> reservationOrWhere = new ArrayList<>();
 
@@ -155,7 +160,7 @@ public class RoomManager {
             query += " ON " + joinStr;
         }
         if (whereStr.length() > 0) {
-            query += " WHERE " + whereStr;
+            query += " WHERE " + whereStr + " ORDER BY room_id ASC";
         }
 
         ArrayList<Room> searchedRoomList = this.roomDao.selectByQuery(query);
@@ -170,16 +175,6 @@ public class RoomManager {
 
         ArrayList<Reservation> reservationList = this.reservationDao.selectByQuery(reservationQuery);
         ArrayList<Integer> busyRoomId = new ArrayList<>();
-
-        for (Reservation reservation : reservationList) {
-            busyRoomId.add(reservation.getRoomId());
-            int mainRoomNumber = this.roomDao.getById(reservation.getRoomId()).getRoomNumber();
-            if (this.roomDao.getById(reservation.getRoomId()).getRoomNumber() > 0) {
-                this.roomDao.reduceRoomNumber(reservation.getRoomId());
-            } else {
-                searchedRoomList.removeIf(room -> busyRoomId.contains(room.getRoomId()));
-            }
-        }
 
 //        if (this.roomDao.getById(reservation.getRoomId()).getRoomNumber() > 0) {
 //            this.roomDao.reduceRoomNumber(reservation.getRoomId());
@@ -204,4 +199,12 @@ public class RoomManager {
 //        }
 //        return this.roomDao.selectByQuery(query);
 //    }
+    // Oda numarasını azaltma
+    public void reduceRoomNumber(int roomId) {
+        Room room = roomDao.getById(roomId);
+        if (room != null && room.getRoomNumber() > 0) {
+            room.setRoomNumber(room.getRoomNumber() - 1);
+            roomDao.update(room);
+        }
+    }
 }

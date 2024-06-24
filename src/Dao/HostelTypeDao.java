@@ -68,10 +68,8 @@ public class HostelTypeDao {
 
     public boolean update(HostelType hostelType) {
         String query = "UPDATE public.hostel_type SET " +
-                "(" +
                 "hotel_id = ?, " +
                 "hostel_type = ?, " +
-                ")" +
                 "WHERE hostel_type_id = ?;";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
