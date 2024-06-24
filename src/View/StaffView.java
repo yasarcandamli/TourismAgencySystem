@@ -104,7 +104,12 @@ public class StaffView extends Layout {
         this.selectRow(this.tbl_new_reservation, this.new_reservation_menu);
 
         this.new_reservation_menu.add("Make a Reservation").addActionListener(e -> {
-
+            int selectRoomId = this.getTableSelectedRow(this.tbl_new_reservation, 0);
+            MakingAReservationView makingAReservationView = new MakingAReservationView(
+                    this.roomManager.getById(selectRoomId),
+                    this.fld_check_in_date_new_reservation.getText(),
+                    this.fld_check_out_date_new_reservation.getText()
+            );
         });
         this.tbl_new_reservation.setComponentPopupMenu(new_reservation_menu);
 

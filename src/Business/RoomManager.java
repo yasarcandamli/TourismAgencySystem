@@ -119,16 +119,16 @@ public class RoomManager {
 
         joinWhere.add("r.hotel_id = h.hotel_id");
 
-        if (addressOrName != null) where.add("h.hotel_address LIKE '%"+ addressOrName +"%'");
+        if (addressOrName != null) where.add("h.hotel_address LIKE '%" + addressOrName + "%'");
 
         String whereStr = String.join(" AND ", where);
         String joinStr = String.join(" AND ", joinWhere);
 
-        if (joinStr.length() > 0){
-            query += " ON " +  joinStr;
+        if (joinStr.length() > 0) {
+            query += " ON " + joinStr;
         }
-        if (whereStr.length() > 0){
-            query += " WHERE " +  whereStr;
+        if (whereStr.length() > 0) {
+            query += " WHERE " + whereStr;
         }
         return this.roomDao.selectByQuery(query);
     }
@@ -144,24 +144,24 @@ public class RoomManager {
         checkInDate = LocalDate.parse(checkInDate, DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString();
         checkOutDate = LocalDate.parse(checkOutDate, DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString();
 
-        if (addressOrName != null) where.add("h.hotel_address LIKE '%"+ addressOrName +"%'");
+        if (addressOrName != null) where.add("h.hotel_address LIKE '%" + addressOrName + "%'");
 
         String whereStr = String.join(" AND ", where);
         String joinStr = String.join(" AND ", joinWhere);
 
-        if (joinStr.length() > 0){
-            query += " ON " +  joinStr;
+        if (joinStr.length() > 0) {
+            query += " ON " + joinStr;
         }
-        if (whereStr.length() > 0){
-            query += " WHERE " +  whereStr;
+        if (whereStr.length() > 0) {
+            query += " WHERE " + whereStr;
         }
 
         ArrayList<Room> searchedRoomList = this.roomDao.selectByQuery(query);
 
-        reservationOrWhere.add("('"+ checkInDate +"' BETWEEN check_in_date AND check_out_date)");
-        reservationOrWhere.add("('"+ checkOutDate +"' BETWEEN check_in_date AND check_out_date)");
-        reservationOrWhere.add("(check_in_date BETWEEN '"+ checkInDate +"' AND '"+ checkOutDate +"')");
-        reservationOrWhere.add("(check_out_date BETWEEN '"+ checkInDate +"' AND '"+ checkOutDate +"')");
+        reservationOrWhere.add("('" + checkInDate + "' BETWEEN check_in_date AND check_out_date)");
+        reservationOrWhere.add("('" + checkOutDate + "' BETWEEN check_in_date AND check_out_date)");
+        reservationOrWhere.add("(check_in_date BETWEEN '" + checkInDate + "' AND '" + checkOutDate + "')");
+        reservationOrWhere.add("(check_out_date BETWEEN '" + checkInDate + "' AND '" + checkOutDate + "')");
 
         String reservationOrWhereStr = String.join(" OR ", reservationOrWhere);
         String reservationQuery = "SELECT * FROM public.reservation WHERE " + reservationOrWhereStr;
@@ -171,13 +171,20 @@ public class RoomManager {
 
         for (Reservation reservation : reservationList) {
             busyRoomId.add(reservation.getRoomId());
+            int mainRoomNumber = this.roomDao.getById(reservation.getRoomId()).getRoomNumber();
+            if (this.roomDao.getById(reservation.getRoomId()).getRoomNumber() > 0) {
+                this.roomDao.reduceRoomNumber(reservation.getRoomId());
+            } else {
+                searchedRoomList.removeIf(room -> busyRoomId.contains(room.getRoomId()));
+            }
         }
+
 //        if (this.roomDao.getById(reservation.getRoomId()).getRoomNumber() > 0) {
 //            this.roomDao.reduceRoomNumber(reservation.getRoomId());
 //        } else {
 //            searchedRoomList.removeIf(room -> busyRoomId.contains(room.getRoomId()));
 //        }
-        searchedRoomList.removeIf(room -> busyRoomId.contains(room.getRoomId()));
+//        searchedRoomList.removeIf(room -> busyRoomId.contains(room.getRoomId()));
         return searchedRoomList;
     }
 
