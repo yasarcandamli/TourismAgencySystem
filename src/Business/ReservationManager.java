@@ -12,11 +12,9 @@ import java.util.ArrayList;
 
 public class ReservationManager {
     private final ReservationDao reservationDao;
-    private final RoomManager roomManager;
 
     public ReservationManager() {
         this.reservationDao = new ReservationDao();
-        this.roomManager = new RoomManager();
     }
 
     public ArrayList<Reservation> findAll() {
@@ -45,6 +43,14 @@ public class ReservationManager {
             return false;
         }
         return this.reservationDao.delete(reservationId);
+    }
+
+    public boolean deleteByHotelId(int hotelId) {
+        return this.reservationDao.deleteByHotelId(hotelId);
+    }
+
+    public boolean deleteByRoomId(int roomId) {
+        return this.reservationDao.deleteByRoomId(roomId);
     }
 
     public Reservation getById(int selectReservationId) {

@@ -1,6 +1,7 @@
 package View;
 
 import Business.HostelTypeManager;
+import Business.ReservationManager;
 import Business.RoomManager;
 import Business.SeasonManager;
 import Core.ComboItem;
@@ -65,6 +66,7 @@ public class HotelDetailView extends Layout {
     private HostelTypeManager hostelTypeManager;
     private SeasonManager seasonManager;
     private RoomManager roomManager;
+    private ReservationManager reservationManager;
     private DefaultTableModel tmdl_hostel_type = new DefaultTableModel();
     private DefaultTableModel tmdl_season = new DefaultTableModel();
     private DefaultTableModel tmdl_hotel_room = new DefaultTableModel();
@@ -131,12 +133,8 @@ public class HotelDetailView extends Layout {
         buttonGroup.add(this.rbtn_junior_suite_hotel_room);
         buttonGroup.add(this.rbtn_suite_hotel_room);
 
-        for (Season season : this.seasonManager.findAllForTable(this.hotel.getHotelId())) {
-            this.cmb_season_hotel_room.addItem(new ComboItem(season.getSeasonId(), season.getSeasonName()));
-        }
-        for (HostelType hostelType : this.hostelTypeManager.findAllForTable(this.hotel.getHotelId())) {
-            this.cmb_hostel_type_hotel_room.addItem(new ComboItem(hostelType.getHostelTypeId(), hostelType.getHostelType()));
-        }
+        refreshHostelTypeComboBox();
+        refreshSeasonComboBox();
 
         this.cmb_tv_hotel_room.setModel(new DefaultComboBoxModel<>(Room.isThere.values()));
         this.cmb_minibar_hotel_room.setModel(new DefaultComboBoxModel<>(Room.isThere.values()));
@@ -190,6 +188,20 @@ public class HotelDetailView extends Layout {
         });
     }
 
+    private void refreshSeasonComboBox() {
+        cmb_season_hotel_room.removeAllItems();
+        for (Season season : this.seasonManager.findAllForTable(this.hotel.getHotelId())) {
+            cmb_season_hotel_room.addItem(new ComboItem(season.getSeasonId(), season.getSeasonName()));
+        }
+    }
+
+    private void refreshHostelTypeComboBox() {
+        cmb_hostel_type_hotel_room.removeAllItems();
+        for (HostelType hostelType : this.hostelTypeManager.findAllForTable(this.hotel.getHotelId())) {
+            cmb_hostel_type_hotel_room.addItem(new ComboItem(hostelType.getHostelTypeId(), hostelType.getHostelType()));
+        }
+    }
+
     private void loadHostelTypeTable() {
         Object[] column_season = {"Hostel Type ID", "Hotel ID", "Hostel Type"};
         ArrayList<Object[]> hostelTypeList = this.hostelTypeManager.getForTable(column_season.length, this.hostelTypeManager.findAllForTable(this.hotel.getHotelId()));
@@ -204,8 +216,10 @@ public class HotelDetailView extends Layout {
             if (Helper.confirm("sure")) {
                 int selectHotelTypeId = this.getTableSelectedRow(tbl_hostel_type, 0);
                 if (this.hostelTypeManager.delete(selectHotelTypeId)) {
+                    this.roomManager.deleteByHostelTypeId(selectHotelTypeId);
                     Helper.showMessage("done");
                     loadHostelTypeTable();
+                    loadHotelRoomTable();
                 } else {
                     Helper.showMessage("error");
                 }
@@ -240,6 +254,8 @@ public class HotelDetailView extends Layout {
                 }
                 loadHostelTypeTable();
 
+                refreshHostelTypeComboBox();
+
                 rbtn_ultra_all_inclusive.setSelected(false);
                 rbtn_all_inclusive.setSelected(false);
                 rbtn_room_breakfast.setSelected(false);
@@ -265,8 +281,10 @@ public class HotelDetailView extends Layout {
             if (Helper.confirm("sure")) {
                 int selectSeasonId = this.getTableSelectedRow(tbl_season, 0);
                 if (this.seasonManager.delete(selectSeasonId)) {
+                    this.roomManager.deleteBySeasonId(selectSeasonId);
                     Helper.showMessage("done");
                     loadSeasonTable();
+                    loadHotelRoomTable();
                 } else {
                     Helper.showMessage("error");
                 }
@@ -288,6 +306,7 @@ public class HotelDetailView extends Layout {
                 if (result) {
                     Helper.showMessage("done");
                     loadSeasonTable();
+                    refreshSeasonComboBox();
                 } else {
                     Helper.showMessage("error");
                 }

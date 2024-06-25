@@ -46,6 +46,10 @@ public class HostelTypeManager {
         return this.hostelTypeDao.delete(hostelTypeId);
     }
 
+    public boolean deleteByHotelId(int hotelId) {
+        return this.hostelTypeDao.deleteByHotelId(hotelId);
+    }
+
     public HostelType getById(int selectHostelTypeId) {
         return this.hostelTypeDao.getById(selectHostelTypeId);
     }

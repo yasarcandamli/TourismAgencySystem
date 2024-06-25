@@ -104,6 +104,18 @@ public class SeasonDao {
         return true;
     }
 
+    public boolean deleteByHotelId(int hotelId) {
+        String query = "DELETE FROM public.season WHERE hotel_id = ?;";
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setInt(1, hotelId);
+            return preparedStatement.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     public Season getById(int selectSeasonId) {
         Season object = null;
         String query = "SELECT * FROM public.season WHERE season_id = ?;";

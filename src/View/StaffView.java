@@ -59,6 +59,7 @@ public class StaffView extends Layout {
     private RoomManager roomManager;
     private SeasonManager seasonManager;
     private ReservationManager reservationManager;
+    private HostelTypeManager hostelTypeManager ;
     private Object[] col_hotel;
     private Object[] col_room_search;
     private Object[] col_new_reservation;
@@ -246,16 +247,10 @@ public class StaffView extends Layout {
         });
 
         btn_clear_new_reservation.addActionListener(e -> {
-            ArrayList<Room> roomList = this.roomManager.searchForNewReservation(
-                    fld_check_in_date_new_reservation.getText(),
-                    fld_check_out_date_new_reservation.getText(),
-                    fld_address_hotel_name_new_reservation.getText());
-            ArrayList<Object[]> roomSearchRow = this.roomManager.getForTableRoomSearch(this.col_new_reservation.length, roomList);
-            loadNewReservationTable(roomSearchRow);
             fld_address_hotel_name_new_reservation.setText(null);
             fld_check_in_date_new_reservation.setText(null);
             fld_check_out_date_new_reservation.setText(null);
-            loadNewReservationTable(roomSearchRow);
+            loadNewReservationTable(null);
         });
     }
 
@@ -340,6 +335,10 @@ public class StaffView extends Layout {
             if (Helper.confirm("sure")) {
                 int selectHotelId = this.getTableSelectedRow(tbl_hotel, 0);
                 if (this.hotelManager.delete(selectHotelId)) {
+                    this.hostelTypeManager.deleteByHotelId(selectHotelId);
+                    this.reservationManager.deleteByHotelId(selectHotelId);
+                    this.roomManager.deleteByHotelId(selectHotelId);
+                    this.seasonManager.deleteByHotelId(selectHotelId);
                     Helper.showMessage("done");
                     loadHotelTable(null);
                 } else {
@@ -354,6 +353,8 @@ public class StaffView extends Layout {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadHotelTable(null);
+                    loadRoomSearchTable(null);
+                    loadNewReservationTable(null);
                 }
             });
         });

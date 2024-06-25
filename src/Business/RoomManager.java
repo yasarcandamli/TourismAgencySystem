@@ -16,6 +16,7 @@ public class RoomManager {
     private final HostelTypeDao hostelTypeDao;
     private final HotelDao hotelDao;
     private final ReservationDao reservationDao;
+    private final ReservationManager reservationManager;
     private ArrayList<Integer> busyRoomIdList;
 
     public RoomManager() {
@@ -25,6 +26,7 @@ public class RoomManager {
         this.hotelDao = new HotelDao();
         this.reservationDao = new ReservationDao();
         this.busyRoomIdList = new ArrayList<>();
+        this.reservationManager = new ReservationManager();
     }
 
     public ArrayList<Room> findAll() {
@@ -59,7 +61,20 @@ public class RoomManager {
             Helper.showMessage("notFound");
             return false;
         }
+        this.reservationManager.deleteByRoomId(roomId);
         return this.roomDao.delete(roomId);
+    }
+
+    public boolean deleteByHotelId(int hotelId) {
+        return this.roomDao.deleteByHotelId(hotelId);
+    }
+
+    public boolean deleteByHostelTypeId(int hostelTypeId) {
+        return this.roomDao.deleteByHostelTypeId(hostelTypeId);
+    }
+
+    public boolean deleteBySeasonId(int seasonId) {
+        return this.roomDao.deleteBySeasonId(seasonId);
     }
 
     public Room getById(int selectRoomId) {

@@ -160,6 +160,42 @@ public class RoomDao {
         return true;
     }
 
+    public boolean deleteByHotelId(int hotelId) {
+        String query = "DELETE FROM public.room WHERE hotel_id = ?;";
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setInt(1, hotelId);
+            return preparedStatement.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean deleteByHostelTypeId(int hostelType) {
+        String query = "DELETE FROM public.room WHERE hostel_type_id = ?;";
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setInt(1, hostelType);
+            return preparedStatement.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public boolean deleteBySeasonId(int seasonId) {
+        String query = "DELETE FROM public.room WHERE season_id = ?;";
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setInt(1, seasonId);
+            return preparedStatement.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     public Room getById(int selectRoomId) {
         Room object = null;
         String query = "SELECT * FROM public.room WHERE room_id = ?;";

@@ -96,6 +96,18 @@ public class HostelTypeDao {
         return true;
     }
 
+    public boolean deleteByHotelId(int hotelId) {
+        String query = "DELETE FROM public.hostel_type WHERE hotel_id = ?;";
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setInt(1, hotelId);
+            return preparedStatement.executeUpdate() != -1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     public HostelType getById(int selectHostelTypeId) {
         HostelType object = null;
         String query = "SELECT * FROM public.hostel_type WHERE hostel_type_id = ?;";
