@@ -2,11 +2,11 @@
 
 ## Giriş Bilgileri
 Admin paneline ulaşmak için
-Username: admin
+Username: admin,
 Password: 1234
 
 Staff paneline ulaşmak için
-Username: staff
+Username: staff,
 Password: 1234
 
 ## Proje Tanımı
