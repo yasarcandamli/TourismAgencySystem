@@ -28,7 +28,6 @@ public class ReservationManager {
             Helper.showMessage("error");
             return false;
         }
-        this.roomManager.reduceRoomNumber(reservation.getRoomId());
         return this.reservationDao.add(reservation);
     }
 
@@ -45,7 +44,6 @@ public class ReservationManager {
             Helper.showMessage("notFound");
             return false;
         }
-        this.roomManager.increaseRoomNumber(this.getById(reservationId).getRoomId());
         return this.reservationDao.delete(reservationId);
     }
 

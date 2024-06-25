@@ -186,6 +186,7 @@ public class StaffView extends Layout {
                 "Bed Number",
                 "Room Area (m2)",
                 "Room Number",
+                "Available Room Number",
                 "Adult Price",
                 "Child Price",
                 "Facilities",
@@ -218,8 +219,14 @@ public class StaffView extends Layout {
             makingAReservationView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
-                    loadNewReservationTable(null);
+                    ArrayList<Room> roomList = StaffView.this.roomManager.searchForNewReservation(
+                            fld_check_in_date_new_reservation.getText(),
+                            fld_check_out_date_new_reservation.getText(),
+                            fld_address_hotel_name_new_reservation.getText());
+                    ArrayList<Object[]> roomSearchRow = StaffView.this.roomManager.getForTableRoomSearch(StaffView.this.col_new_reservation.length, roomList);
+                    loadNewReservationTable(roomSearchRow);
                     loadReservationsTable(null);
+                    loadRoomSearchTable(null);
                 }
             });
         });
@@ -239,10 +246,16 @@ public class StaffView extends Layout {
         });
 
         btn_clear_new_reservation.addActionListener(e -> {
+            ArrayList<Room> roomList = this.roomManager.searchForNewReservation(
+                    fld_check_in_date_new_reservation.getText(),
+                    fld_check_out_date_new_reservation.getText(),
+                    fld_address_hotel_name_new_reservation.getText());
+            ArrayList<Object[]> roomSearchRow = this.roomManager.getForTableRoomSearch(this.col_new_reservation.length, roomList);
+            loadNewReservationTable(roomSearchRow);
             fld_address_hotel_name_new_reservation.setText(null);
             fld_check_in_date_new_reservation.setText(null);
             fld_check_out_date_new_reservation.setText(null);
-            loadNewReservationTable(null);
+            loadNewReservationTable(roomSearchRow);
         });
     }
 
@@ -257,6 +270,7 @@ public class StaffView extends Layout {
                 "Bed Number",
                 "Room Area (m2)",
                 "Room Number",
+                "Available Room Number",
                 "Adult Price",
                 "Child Price",
                 "Facilities",
