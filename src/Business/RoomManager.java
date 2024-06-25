@@ -127,9 +127,9 @@ public class RoomManager {
 
         if (addressOrName != null) where.add(
                 "h.hotel_address LIKE '%" + addressOrName + "%' " +
-                "OR h.hotel_name LIKE '%" + addressOrName + "%' " +
-                "OR h.hotel_city LIKE '%" + addressOrName + "%'" +
-                "OR h.hotel_district LIKE '%" + addressOrName + "%'"
+                        "OR h.hotel_name LIKE '%" + addressOrName + "%' " +
+                        "OR h.hotel_city LIKE '%" + addressOrName + "%'" +
+                        "OR h.hotel_district LIKE '%" + addressOrName + "%'"
         );
 
         String whereStr = String.join(" AND ", where);
@@ -145,66 +145,67 @@ public class RoomManager {
     }
 
     public ArrayList<Room> searchForNewReservation(String checkInDate, String checkOutDate, String addressOrName) {
-        String query = "SELECT * FROM public.room as r LEFT JOIN public.hotels as h";
+        String query = "SELECT r.* FROM public.room AS r " +
+                "LEFT JOIN public.hotels AS h ON r.hotel_id = h.hotel_id " +
+                "LEFT JOIN public.season AS s ON h.hotel_id = s.hotel_id ";
+
         ArrayList<String> where = new ArrayList<>();
-        where.add("room_number > 0");
-        ArrayList<String> joinWhere = new ArrayList<>();
-        ArrayList<String> reservationOrWhere = new ArrayList<>();
+        where.add("r.room_number > 0");
+        where.add("r.season_id = s.season_id");
 
-        joinWhere.add("r.hotel_id = h.hotel_id");
-
+        // Tarih formatını dönüştürme
         checkInDate = LocalDate.parse(checkInDate, DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString();
         checkOutDate = LocalDate.parse(checkOutDate, DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString();
 
-        if (addressOrName != null) where.add("h.hotel_address LIKE '%" + addressOrName + "%'");
-
-        String whereStr = String.join(" AND ", where);
-        String joinStr = String.join(" AND ", joinWhere);
-
-        if (joinStr.length() > 0) {
-            query += " ON " + joinStr;
+        if (addressOrName != null && !addressOrName.isEmpty()) {
+            where.add("(h.hotel_address LIKE '%" + addressOrName + "%' OR h.hotel_name LIKE '%" + addressOrName + "%')");
         }
-        if (whereStr.length() > 0) {
-            query += " WHERE " + whereStr + " ORDER BY room_id ASC";
+
+        // Sezon tarihleri kontrolü
+        ArrayList<String> seasonOrWhere = new ArrayList<>();
+        seasonOrWhere.add("('" + checkInDate + "' BETWEEN s.season_start_date AND s.season_end_date)");
+        seasonOrWhere.add("('" + checkOutDate + "' BETWEEN s.season_start_date AND s.season_end_date)");
+        seasonOrWhere.add("(s.season_start_date BETWEEN '" + checkInDate + "' AND '" + checkOutDate + "')");
+        seasonOrWhere.add("(s.season_end_date BETWEEN '" + checkInDate + "' AND '" + checkOutDate + "')");
+        String seasonOrWhereStr = String.join(" OR ", seasonOrWhere);
+
+        // WHERE koşullarını birleştirme
+        if (!where.isEmpty()) {
+            query += "WHERE " + String.join(" AND ", where) + " AND (" + seasonOrWhereStr + ")";
+        } else {
+            query += "WHERE " + seasonOrWhereStr;
         }
+
+        query += " ORDER BY r.room_id ASC";
 
         ArrayList<Room> searchedRoomList = this.roomDao.selectByQuery(query);
-        ArrayList<Integer> allRoomId = new ArrayList<>();
-        for (Room room : searchedRoomList) {
-            allRoomId.add(room.getRoomId());
-        }
-
-        reservationOrWhere.add("('" + checkInDate + "' BETWEEN check_in_date AND check_out_date)");
-        reservationOrWhere.add("('" + checkOutDate + "' BETWEEN check_in_date AND check_out_date)");
-        reservationOrWhere.add("(check_in_date BETWEEN '" + checkInDate + "' AND '" + checkOutDate + "')");
-        reservationOrWhere.add("(check_out_date BETWEEN '" + checkInDate + "' AND '" + checkOutDate + "')");
-
-        String reservationOrWhereStr = String.join(" OR ", reservationOrWhere);
-        String reservationQuery = "SELECT * FROM public.reservation WHERE " + reservationOrWhereStr;
-
-        ArrayList<Reservation> reservationList = this.reservationDao.selectByQuery(reservationQuery);
-        ArrayList<Integer> busyRoomId = new ArrayList<>();
-        //BURASI ÖNEMLİ, BU KODU KULLANARAK ODA SAYISINI DÜZELTEBİLİRİZ!!!
-        /*for (Reservation reservation : reservationList) {
-            busyRoomId.add(reservation.getRoomId());
-        }
-
-        for (Integer roomId : busyRoomId) {
-            if (allRoomId.contains(roomId)) {
-                reduceRoomNumber(roomId);
-            }
-        }*/
-
-//        if (this.roomDao.getById(reservation.getRoomId()).getRoomNumber() > 0) {
-//            this.roomDao.reduceRoomNumber(reservation.getRoomId());
-//        } else {
-//            searchedRoomList.removeIf(room -> busyRoomId.contains(room.getRoomId()));
+//        ArrayList<Integer> allRoomId = new ArrayList<>();
+//        for (Room room : searchedRoomList) {
+//            allRoomId.add(room.getRoomId());
 //        }
+//
+//        // Rezervasyon tarihleri kontrolü
+//        ArrayList<String> reservationOrWhere = new ArrayList<>();
+//        reservationOrWhere.add("('" + checkInDate + "' BETWEEN check_in_date AND check_out_date)");
+//        reservationOrWhere.add("('" + checkOutDate + "' BETWEEN check_in_date AND check_out_date)");
+//        reservationOrWhere.add("(check_in_date BETWEEN '" + checkInDate + "' AND '" + checkOutDate + "')");
+//        reservationOrWhere.add("(check_out_date BETWEEN '" + checkInDate + "' AND '" + checkOutDate + "')");
+//        String reservationOrWhereStr = String.join(" OR ", reservationOrWhere);
+//
+//        String reservationQuery = "SELECT * FROM public.reservation WHERE " + reservationOrWhereStr;
+//        ArrayList<Reservation> reservationList = this.reservationDao.selectByQuery(reservationQuery);
+//        ArrayList<Integer> busyRoomId = new ArrayList<>();
+//        for (Reservation reservation : reservationList) {
+//            busyRoomId.add(reservation.getRoomId());
+//        }
+//
 //        searchedRoomList.removeIf(room -> busyRoomId.contains(room.getRoomId()));
+
         return searchedRoomList;
+
     }
 
-//    public ArrayList<Room> filterForTable(Hotel.UserType userType) {
+    //    public ArrayList<Room> filterForTable(Hotel.UserType userType) {
 //        String select = "SELECT * FROM public.room";
 //        ArrayList<String> whereList = new ArrayList<>();
 //

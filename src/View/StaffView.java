@@ -290,45 +290,6 @@ public class StaffView extends Layout {
         });
     }
 
-//    public void loadRoomSearchComponent() {
-//        this.room_search_menu = new JPopupMenu();
-//        this.selectRow(this.tbl_room_search, this.room_search_menu);
-//
-//        btn_filter_room_search.addActionListener(e -> {
-//            String cityDistrictHotelName = fld_city_district_hotel_room_search.getText();
-//            LocalDate checkIn = LocalDate.parse(fld_checkin_date_room_search.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-//            LocalDate checkOut = LocalDate.parse(fld_checkout_date_room_search.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-//
-//            LocalDate checkInDate = null;
-//            LocalDate checkOutDate = null;
-//            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-//
-//            String query = "SELECT * FROM hotel WHERE name LIKE '%(name)%' OR address LIKE '%(address)%'";
-//            query = query.replace("(name)", cityDistrictHotelName);
-//            query = query.replace("(address)", cityDistrictHotelName);
-//            ArrayList<Hotel> searchHotel = this.hotelManager.selectByQuery(query);
-//
-//            ArrayList<Room> temporaryRoomList = new ArrayList<>();
-//
-//            for (Hotel hotel : searchHotel) {
-//                for (Room room : this.roomManager.findAll()) {
-//                    if (room.getHotelId() == hotel.getHotelId() && room.getRoomNumber() > 0) { // Oda stok kontrolü yapılıyor
-//                        temporaryRoomList.add(room);
-//                    }
-//                }
-//            }
-//            ArrayList<Room> searchingRoomList = new ArrayList<>();
-//            for (Room room : temporaryRoomList) {
-//                Season temporarySeason = this.seasonManager.getById(room.getRoomId());
-//
-//                if (checkInDate.isAfter(this.seasonManager.getById(room.getSeasonId()).getSeasonStartDate()) && checkInDate.isAfter(this.seasonManager.getById(room.getSeasonId()).getSeasonEndDate())) {
-//                    searchingRoomList.add(room);
-//                }
-//            }
-//            loadRoomSearchTable(searchingRoomList); // Değerlendirme 14 : Uygun odalar listelenip kullanıcıya gösteriliyor
-//        });
-//    }
-
     public void loadHotelTable(ArrayList<Object[]> hotelList) {
         this.col_hotel = new Object[]{"Hotel ID", "Name", "City", "District", "Address", "E-Mail", "Phone Number", "Star", "Facilities"};
         if (hotelList == null) {
@@ -392,9 +353,9 @@ public class StaffView extends Layout {
         this.fld_checkout_date_room_search = new JFormattedTextField(new MaskFormatter("##/##/####"));
         this.fld_checkout_date_room_search.setText("08/05/2025");
         this.fld_check_in_date_new_reservation = new JFormattedTextField(new MaskFormatter("##/##/####"));
-        this.fld_check_in_date_new_reservation.setText("02/05/2025");
+//        this.fld_check_in_date_new_reservation.setText("02/05/2025");
         this.fld_check_out_date_new_reservation = new JFormattedTextField(new MaskFormatter("##/##/####"));
-        this.fld_check_out_date_new_reservation.setText("08/05/2025");
+//        this.fld_check_out_date_new_reservation.setText("08/05/2025");
     }
 
     public void loadComponent() {
