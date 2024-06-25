@@ -24,7 +24,7 @@ public class UserView extends Layout {
         this.user = user;
         this.userManager = new UserManager();
         this.add(container);
-        this.guiInitialize(300, 250);
+        this.guiInitialize(300, 300);
 
         this.cmb_user_type.setModel(new DefaultComboBoxModel<>(User.UserType.values()));
 

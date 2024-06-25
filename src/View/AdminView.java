@@ -7,6 +7,8 @@ import Entity.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ public class AdminView extends Layout {
         }
 
         this.lbl_admin_welcome.setText("Welcome: " + this.user.getUserName());
+
+        loadComponent();
 
         loadUserTable(null);
         loadUserComponent();
@@ -110,5 +114,15 @@ public class AdminView extends Layout {
     public void loadUserFilter() {
         this.cmb_filter_user_type.setModel(new DefaultComboBoxModel<>(User.UserType.values()));
         this.cmb_filter_user_type.setSelectedItem(null);
+    }
+
+    public void loadComponent() {
+        this.btn_admin_logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                LoginView loginView = new LoginView();
+            }
+        });
     }
 }
