@@ -139,6 +139,7 @@ public class StaffView extends Layout {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadReservationsTable(null);
+                    loadNewReservationTable(null);
                 }
             });
         });
@@ -147,8 +148,8 @@ public class StaffView extends Layout {
                 int selectReservationId = this.getTableSelectedRow(tbl_reservations, 0);
                 if (this.reservationManager.delete(selectReservationId)) {
                     Helper.showMessage("done");
-                    loadReservationsTable(null);
                     loadNewReservationTable(null);
+                    loadReservationsTable(null);
                 } else {
                     Helper.showMessage("error");
                 }
@@ -215,7 +216,6 @@ public class StaffView extends Layout {
                 public void windowClosed(WindowEvent e) {
                     loadNewReservationTable(null);
                     loadReservationsTable(null);
-                    roomManager.reduceRoomNumber(selectRoomId);
                 }
             });
         });

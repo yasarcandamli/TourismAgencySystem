@@ -173,7 +173,7 @@
         </constraints>
         <properties>
           <editable value="false"/>
-          <enabled value="false"/>
+          <enabled value="true"/>
         </properties>
       </component>
       <component id="81ffb" class="javax.swing.JButton" binding="btn_reservation_make">

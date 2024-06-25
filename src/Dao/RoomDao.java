@@ -43,7 +43,7 @@ public class RoomDao {
     }
 
     public ArrayList<Room> findAllAvailableRoom() {
-        return this.selectByQuery("SELECT * FROM public.room WHERE room_number > 0;");
+        return this.selectByQuery("SELECT * FROM public.room WHERE room_number > 0 ORDER BY room_id ASC;");
     }
 
     public ArrayList<Room> findAllForTable(int hotelId) {

@@ -164,6 +164,10 @@ public class RoomManager {
         }
 
         ArrayList<Room> searchedRoomList = this.roomDao.selectByQuery(query);
+        ArrayList<Integer> allRoomId = new ArrayList<>();
+        for (Room room : searchedRoomList) {
+            allRoomId.add(room.getRoomId());
+        }
 
         reservationOrWhere.add("('" + checkInDate + "' BETWEEN check_in_date AND check_out_date)");
         reservationOrWhere.add("('" + checkOutDate + "' BETWEEN check_in_date AND check_out_date)");
@@ -175,6 +179,16 @@ public class RoomManager {
 
         ArrayList<Reservation> reservationList = this.reservationDao.selectByQuery(reservationQuery);
         ArrayList<Integer> busyRoomId = new ArrayList<>();
+        //BURASI ÖNEMLİ, BU KODU KULLANARAK ODA SAYISINI DÜZELTEBİLİRİZ!!!
+        /*for (Reservation reservation : reservationList) {
+            busyRoomId.add(reservation.getRoomId());
+        }
+
+        for (Integer roomId : busyRoomId) {
+            if (allRoomId.contains(roomId)) {
+                reduceRoomNumber(roomId);
+            }
+        }*/
 
 //        if (this.roomDao.getById(reservation.getRoomId()).getRoomNumber() > 0) {
 //            this.roomDao.reduceRoomNumber(reservation.getRoomId());
@@ -205,6 +219,15 @@ public class RoomManager {
         if (room != null && room.getRoomNumber() > 0) {
             room.setRoomNumber(room.getRoomNumber() - 1);
             roomDao.update(room);
+        }
+    }
+
+    // Oda numarasını artırma
+    public void increaseRoomNumber(int roomId) {
+        Room room = this.roomDao.getById(roomId);
+        if (room != null) {
+            room.setRoomNumber(room.getRoomNumber() + 1);
+            this.roomDao.update(room);
         }
     }
 }

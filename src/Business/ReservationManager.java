@@ -12,11 +12,11 @@ import java.util.ArrayList;
 
 public class ReservationManager {
     private final ReservationDao reservationDao;
-    private final RoomDao roomDao;
+    private final RoomManager roomManager;
 
     public ReservationManager() {
         this.reservationDao = new ReservationDao();
-        this.roomDao = new RoomDao();
+        this.roomManager = new RoomManager();
     }
 
     public ArrayList<Reservation> findAll() {
@@ -26,7 +26,9 @@ public class ReservationManager {
     public boolean add(Reservation reservation) {
         if (reservation.getReservationId() != 0) {
             Helper.showMessage("error");
+            return false;
         }
+        this.roomManager.reduceRoomNumber(reservation.getRoomId());
         return this.reservationDao.add(reservation);
     }
 
@@ -39,11 +41,11 @@ public class ReservationManager {
     }
 
     public boolean delete(int reservationId) {
-//        increaseRoomNumber(getById(reservationId).getRoomId());
         if (this.getById(reservationId) == null) {
             Helper.showMessage("notFound");
             return false;
         }
+        this.roomManager.increaseRoomNumber(this.getById(reservationId).getRoomId());
         return this.reservationDao.delete(reservationId);
     }
 
@@ -71,6 +73,7 @@ public class ReservationManager {
             rowObject[i++] = object.getTotalPrice();
             reservationObjectList.add(rowObject);
         }
+        ArrayList<Reservation> busyRoomID = new ArrayList<>();
         return reservationObjectList;
     }
 
@@ -91,15 +94,6 @@ public class ReservationManager {
 
         ArrayList<Reservation> searchedRoomList = this.reservationDao.selectByQuery(query);
         return searchedRoomList;
-    }
-
-    // Oda numarasını artırma
-    public void increaseRoomNumber(int roomId) {
-        Room room = this.roomDao.getById(roomId);
-        if (room != null) {
-            room.setRoomNumber(room.getRoomNumber() + 1);
-            this.roomDao.update(room);
-        }
     }
 
 //    public ArrayList<Hotel> filterForTable(Hotel.UserType userType) {

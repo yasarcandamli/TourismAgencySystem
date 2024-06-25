@@ -42,7 +42,7 @@ public class MakingAReservationView extends Layout {
         this.hotelManager = new HotelManager();
 
         this.add(container);
-        this.guiInitialize(700, 400);
+        this.guiInitialize(700, 325);
 
         lbl_room_info_reservation_make.setText(
                 "Hotel: " + this.hotelManager.getById(this.room.getHotelId()).getHotelName() +
