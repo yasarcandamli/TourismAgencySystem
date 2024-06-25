@@ -205,6 +205,10 @@ public class StaffView extends Layout {
         this.selectRow(this.tbl_new_reservation, this.new_reservation_menu);
 
         this.new_reservation_menu.add("Make a Reservation").addActionListener(e -> {
+            if (Helper.isFormattedFieldEmpty(this.fld_check_in_date_new_reservation) || (Helper.isFormattedFieldEmpty(this.fld_check_out_date_new_reservation))){
+                Helper.showMessage("Please, enter the dates!");
+                return;
+            }
             int selectRoomId = this.getTableSelectedRow(this.tbl_new_reservation, 0);
             MakingAReservationView makingAReservationView = new MakingAReservationView(
                     this.roomManager.getById(selectRoomId),
@@ -222,6 +226,10 @@ public class StaffView extends Layout {
         this.tbl_new_reservation.setComponentPopupMenu(new_reservation_menu);
 
         btn_filter_new_reservation.addActionListener(e -> {
+            if (Helper.isFormattedFieldEmpty(this.fld_check_in_date_new_reservation) || (Helper.isFormattedFieldEmpty(this.fld_check_out_date_new_reservation))){
+                Helper.showMessage("Please, enter the dates!");
+                return;
+            }
             ArrayList<Room> roomList = this.roomManager.searchForNewReservation(
                     fld_check_in_date_new_reservation.getText(),
                     fld_check_out_date_new_reservation.getText(),
@@ -231,10 +239,9 @@ public class StaffView extends Layout {
         });
 
         btn_clear_new_reservation.addActionListener(e -> {
-//            if (Helper.isFormattedFieldListEmpty(new JFormattedTextField[] {this.fld_check_in_date_new_reservation, this.fld_check_out_date_new_reservation})) {
-//                Helper.showMessage("fill");
-//            }
             fld_address_hotel_name_new_reservation.setText(null);
+            fld_check_in_date_new_reservation.setText(null);
+            fld_check_out_date_new_reservation.setText(null);
             loadNewReservationTable(null);
         });
     }
