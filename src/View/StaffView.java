@@ -268,15 +268,10 @@ public class StaffView extends Layout {
         this.room_search_menu = new JPopupMenu();
         this.selectRow(this.tbl_room_search, this.room_search_menu);
 
-//        this.room_search_menu.add("Make a Reservation").addActionListener(e -> {
-//
-//        });
         this.tbl_room_search.setComponentPopupMenu(room_search_menu);
 
         btn_filter_room_search.addActionListener(e -> {
             ArrayList<Room> roomList = this.roomManager.searchForRoomSearch(
-//                    fld_checkin_date_room_search.getText(),
-//                    fld_checkout_date_room_search.getText(),
                     fld_city_district_hotel_room_search.getText());
             ArrayList<Object[]> roomSearchRow = this.roomManager.getForTableRoomSearch(this.col_room_search.length, roomList);
             loadRoomSearchTable(roomSearchRow);
@@ -284,8 +279,6 @@ public class StaffView extends Layout {
 
         btn_clear_room_search.addActionListener(e -> {
             fld_city_district_hotel_room_search.setText(null);
-//            fld_checkin_date_room_search.setText(null);
-//            fld_checkout_date_room_search.setText(null);
             loadRoomSearchTable(null);
         });
     }

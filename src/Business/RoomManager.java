@@ -125,7 +125,12 @@ public class RoomManager {
 
         joinWhere.add("r.hotel_id = h.hotel_id");
 
-        if (addressOrName != null) where.add("h.hotel_address LIKE '%" + addressOrName + "%'");
+        if (addressOrName != null) where.add(
+                "h.hotel_address LIKE '%" + addressOrName + "%' " +
+                "OR h.hotel_name LIKE '%" + addressOrName + "%' " +
+                "OR h.hotel_city LIKE '%" + addressOrName + "%'" +
+                "OR h.hotel_district LIKE '%" + addressOrName + "%'"
+        );
 
         String whereStr = String.join(" AND ", where);
         String joinStr = String.join(" AND ", joinWhere);
@@ -134,7 +139,7 @@ public class RoomManager {
             query += " ON " + joinStr;
         }
         if (whereStr.length() > 0) {
-            query += " WHERE " + whereStr;
+            query += " WHERE " + whereStr + " ORDER BY room_id ASC";
         }
         return this.roomDao.selectByQuery(query);
     }

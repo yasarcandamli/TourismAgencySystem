@@ -67,7 +67,7 @@ public class Helper {
     }
 
     public static boolean isFormattedFieldEmpty(JFormattedTextField field) {
-        return field.getText().replace("/", "").trim().isEmpty();
+        return field.getText().replaceAll("/", "").trim().isEmpty();
     }
 
     //Querying whether text fields are empty or not

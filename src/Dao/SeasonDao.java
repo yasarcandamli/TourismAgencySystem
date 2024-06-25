@@ -118,4 +118,21 @@ public class SeasonDao {
         }
         return object;
     }
+
+    public Season getByDate(Season season, int selectSeasonId) {
+        Season object = null;
+        String query = "SELECT * FROM public.season WHERE hotel_id = ? AND season_start_date = ? AND season_end_date = ?;";
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement(query);
+            preparedStatement.setInt(1, season.getHotelId());
+            preparedStatement.setDate(2, Date.valueOf(season.getSeasonStartDate()));
+            preparedStatement.setDate(3, Date.valueOf(season.getSeasonEndDate()));
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) object = this.match(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
 }

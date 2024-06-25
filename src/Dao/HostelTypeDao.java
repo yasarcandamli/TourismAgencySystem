@@ -111,12 +111,13 @@ public class HostelTypeDao {
         return object;
     }
 
-    public HostelType getByName(String selectHostelTypeName) {
+    public HostelType getByName(String selectHostelTypeName, int selectHotelId) {
         HostelType object = null;
-        String query = "SELECT * FROM public.hostel_type WHERE hostel_type = ?;";
+        String query = "SELECT * FROM public.hostel_type WHERE hostel_type = ? AND hotel_id = ?;";
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(query);
             preparedStatement.setString(1, selectHostelTypeName);
+            preparedStatement.setInt(2, selectHotelId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) object = this.match(resultSet);

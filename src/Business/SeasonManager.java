@@ -24,8 +24,9 @@ public class SeasonManager {
     }
 
     public boolean add(Season season) {
-        if (season.getSeasonId() != 0) {
-            Helper.showMessage("error");
+        if (this.getByDate(season) != null) {
+            Helper.showMessage("The season for these start and end dates already exists!");
+            return false;
         }
         return this.seasonDao.add(season);
     }
@@ -48,6 +49,10 @@ public class SeasonManager {
 
     public Season getById(int selectSeasonId) {
         return this.seasonDao.getById(selectSeasonId);
+    }
+
+    public Season getByDate(Season season) {
+        return this.seasonDao.getByDate(season, season.getSeasonId());
     }
 
     public ArrayList<Object[]> getForTable(int size, ArrayList<Season> seasonList) { //Create objects as many as the number of columns

@@ -23,7 +23,7 @@ public class HostelTypeManager {
     }
 
     public boolean add(Hotel hotel, String hostelType) {
-        if (this.getByName(hostelType) != null){
+        if (this.getByName(hostelType, hotel.getHotelId()) != null){
             Helper.showMessage("Already Exist!");
             return false;
         }
@@ -49,10 +49,9 @@ public class HostelTypeManager {
     public HostelType getById(int selectHostelTypeId) {
         return this.hostelTypeDao.getById(selectHostelTypeId);
     }
-    public HostelType getByName(String selectHostelTypeName) {
-        return this.hostelTypeDao.getByName(selectHostelTypeName);
+    public HostelType getByName(String selectHostelTypeName, int selectHotelId) {
+        return this.hostelTypeDao.getByName(selectHostelTypeName, selectHotelId);
     }
-
 
     public ArrayList<Object[]> getForTable(int size, ArrayList<HostelType> hostelTypeList) { //Create objects as many as the number of columns
         ArrayList<Object[]> hostelTypeObjectList = new ArrayList<>();

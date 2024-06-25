@@ -173,10 +173,10 @@ public class HotelDetailView extends Layout {
                     this.room.setAdultPrice(Integer.parseInt(fld_adult_price_hotel_room.getText()));
                     this.room.setChildPrice(Integer.parseInt(fld_child_price_hotel_room.getText()));
                     this.room.setTv((Room.isThere) cmb_tv_hotel_room.getSelectedItem());
-                    this.room.setMinibar((Room.isThere) cmb_tv_hotel_room.getSelectedItem());
-                    this.room.setGameConsole((Room.isThere) cmb_tv_hotel_room.getSelectedItem());
-                    this.room.setSafeBox((Room.isThere) cmb_tv_hotel_room.getSelectedItem());
-                    this.room.setProjection((Room.isThere) cmb_tv_hotel_room.getSelectedItem());
+                    this.room.setMinibar((Room.isThere) cmb_minibar_hotel_room.getSelectedItem());
+                    this.room.setGameConsole((Room.isThere) cmb_game_console_hotel_room.getSelectedItem());
+                    this.room.setSafeBox((Room.isThere) cmb_safe_box_hotel_room.getSelectedItem());
+                    this.room.setProjection((Room.isThere) cmb_projection_hotel_room.getSelectedItem());
                     result = this.roomManager.add(this.room, selectedRoomType);
 
                     if (result) {
@@ -274,7 +274,7 @@ public class HotelDetailView extends Layout {
         });
 
         btn_add_season.addActionListener(e -> {
-            if (Helper.isFieldEmpty(fld_season_start_date) || Helper.isFieldEmpty(fld_season_end_date) || Helper.isFieldEmpty(fld_season_name)) {
+            if (Helper.isFormattedFieldEmpty(fld_season_start_date) || Helper.isFormattedFieldEmpty(fld_season_end_date) || Helper.isFieldEmpty(fld_season_name)) {
                 Helper.showMessage("fill");
             } else {
                 boolean result;
