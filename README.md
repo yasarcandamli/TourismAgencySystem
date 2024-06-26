@@ -40,7 +40,7 @@ Proje kullanımı için aşağıdaki adımları takip edebilirsiniz:
 
 - Buradan Username ve Password ile giriş yapılmaktadır. 
 - Admin rolüne sahip bir kullanıcı girişi yapıldığında Admin paneli, Staff rolüne sahip bir kullanıcı girişi yapıldığında Staff paneli açılmaktadır.
-- Alanlar doldurulmadan Log In butonuna tıklandığında uyarı mesajı alınmaktadır.
+- Alanlar doldurulmadan Log In butonuna tıklandığında ve sistemde olmayan Username / Password girildiğinde uyarı mesajı vermektedir.
 
 **Admin Ekranı**
 
