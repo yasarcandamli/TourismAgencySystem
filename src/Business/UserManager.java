@@ -17,6 +17,7 @@ public class UserManager {
         return this.userDao.findByLogin(userName, userPassword);
     }
 
+    // Brings up all users
     public ArrayList<User> findAll() {
         return userDao.findAll();
     }

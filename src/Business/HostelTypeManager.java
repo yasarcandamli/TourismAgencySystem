@@ -14,14 +14,17 @@ public class HostelTypeManager {
         this.hostelTypeDao = new HostelTypeDao();
     }
 
+    // Fetches all hostel types
     public ArrayList<HostelType> findAll() {
         return hostelTypeDao.findAll();
     }
 
+    // Gets hostel types according to hotel ID
     public ArrayList<HostelType> findAllForTable(int hotelId) {
         return hostelTypeDao.findAllForTable(hotelId);
     }
 
+    // Adds new hostel type
     public boolean add(Hotel hotel, String hostelType) {
         if (this.getByName(hostelType, hotel.getHotelId()) != null){
             Helper.showMessage("Already Exist!");
@@ -30,6 +33,7 @@ public class HostelTypeManager {
         return this.hostelTypeDao.add(hotel, hostelType);
     }
 
+    // Updates the hostel type
 //    public boolean update(HostelType hostelType) {
 //        if (this.getById(hostelType.getHostelTypeId()) == null) {
 //            Helper.showMessage("notFound");
@@ -38,6 +42,7 @@ public class HostelTypeManager {
 //        return this.hostelTypeDao.update(hostelType);
 //    }
 
+    // Deletes the hostel type
     public boolean delete(int hostelTypeId) {
         if (this.getById(hostelTypeId) == null) {
             Helper.showMessage("notFound");
@@ -50,13 +55,17 @@ public class HostelTypeManager {
         return this.hostelTypeDao.deleteByHotelId(hotelId);
     }
 
+    // Gets the type of hostel with ID
     public HostelType getById(int selectHostelTypeId) {
         return this.hostelTypeDao.getById(selectHostelTypeId);
     }
+
+    // Gets the type of hostel with name
     public HostelType getByName(String selectHostelTypeName, int selectHotelId) {
         return this.hostelTypeDao.getByName(selectHostelTypeName, selectHotelId);
     }
 
+    // Gets the board type data for the table
     public ArrayList<Object[]> getForTable(int size, ArrayList<HostelType> hostelTypeList) { //Create objects as many as the number of columns
         ArrayList<Object[]> hostelTypeObjectList = new ArrayList<>();
 

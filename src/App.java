@@ -9,6 +9,6 @@ import javax.swing.*;
 public class App {
     public static void main(String[] args) {
         Helper.setTheme();
-        LoginView loginView = new LoginView();
+        LoginView loginView = new LoginView(); // Bring up the login page by launching the app
     }
 }

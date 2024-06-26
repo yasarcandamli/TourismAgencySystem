@@ -109,6 +109,7 @@ public class StaffView extends Layout {
         loadReservationComponent();
     }
 
+    // Loads existing bookings to the table
     public void loadReservationsTable(ArrayList<Object[]> reservationList) {
         this.col_reservations = new Object[]{
                 "Reservation ID",

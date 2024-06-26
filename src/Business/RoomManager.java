@@ -29,6 +29,7 @@ public class RoomManager {
         this.reservationManager = new ReservationManager();
     }
 
+    // Brings all rooms
     public ArrayList<Room> findAll() {
         return roomDao.findAll();
     }
@@ -37,10 +38,12 @@ public class RoomManager {
         return roomDao.findAllAvailableRoom();
     }
 
+    // Fetches rooms according to hotel ID
     public ArrayList<Room> findAllForTable(int hotelId) {
         return roomDao.findAllForTable(hotelId);
     }
 
+    // Adds new room
     public boolean add(Room room, String roomType) {
         if (room.getRoomId() != 0) {
             Helper.showMessage("error");
@@ -48,6 +51,7 @@ public class RoomManager {
         return this.roomDao.add(room, roomType);
     }
 
+    // Updates the room
     public boolean update(Room room) {
         if (this.getById(room.getRoomId()) == null) {
             Helper.showMessage("notFound");
@@ -56,6 +60,7 @@ public class RoomManager {
         return this.roomDao.update(room);
     }
 
+    // Deletes the room
     public boolean delete(int roomId) {
         if (this.getById(roomId) == null) {
             Helper.showMessage("notFound");
@@ -77,10 +82,12 @@ public class RoomManager {
         return this.roomDao.deleteBySeasonId(seasonId);
     }
 
+    // Fetches the room with ID
     public Room getById(int selectRoomId) {
         return this.roomDao.getById(selectRoomId);
     }
 
+    // Gets room data for the table
     public ArrayList<Object[]> getForTable(int size, ArrayList<Room> roomList) { //Create objects as many as the number of columns
         ArrayList<Object[]> roomObjectList = new ArrayList<>();
 

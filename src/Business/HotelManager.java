@@ -14,6 +14,7 @@ public class HotelManager {
         this.hotelDao = new HotelDao();
     }
 
+    // Brings all hotels
     public ArrayList<Hotel> findAll() {
         return hotelDao.findAll();
     }
@@ -22,6 +23,7 @@ public class HotelManager {
         return hotelDao.selectByQuery(query);
     }
 
+    // Adds new hotel
     public boolean add(Hotel hotel) {
         if (hotel.getHotelId() != 0) {
             Helper.showMessage("error");
@@ -29,6 +31,7 @@ public class HotelManager {
         return this.hotelDao.add(hotel);
     }
 
+    // Updates the hotel
     public boolean update(Hotel hotel) {
         if (this.getById(hotel.getHotelId()) == null) {
             Helper.showMessage("notFound");
@@ -37,6 +40,7 @@ public class HotelManager {
         return this.hotelDao.update(hotel);
     }
 
+    // Deletes the hotel
     public boolean delete(int hotelId) {
         if (this.getById(hotelId) == null) {
             Helper.showMessage("notFound");
@@ -45,10 +49,12 @@ public class HotelManager {
         return this.hotelDao.delete(hotelId);
     }
 
+    // Fetches the hotel with ID
     public Hotel getById(int selectHotelId) {
         return this.hotelDao.getById(selectHotelId);
     }
 
+    // Gets hotel data for the table
     public ArrayList<Object[]> getForTable(int size, ArrayList<Hotel> hotelList) { //Create objects as many as the number of columns
         ArrayList<Object[]> hotelObjectList = new ArrayList<>();
 

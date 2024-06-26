@@ -17,10 +17,12 @@ public class ReservationManager {
         this.reservationDao = new ReservationDao();
     }
 
+    // Fetches all bookings
     public ArrayList<Reservation> findAll() {
         return reservationDao.findAll();
     }
 
+    // Adds new reservation
     public boolean add(Reservation reservation) {
         if (reservation.getReservationId() != 0) {
             Helper.showMessage("error");
@@ -29,6 +31,7 @@ public class ReservationManager {
         return this.reservationDao.add(reservation);
     }
 
+    // Updates the reservation
     public boolean update(Reservation reservation) {
         if (this.getById(reservation.getReservationId()) == null) {
             Helper.showMessage("notFound");
@@ -37,6 +40,7 @@ public class ReservationManager {
         return this.reservationDao.update(reservation);
     }
 
+    // Deletes the reservation
     public boolean delete(int reservationId) {
         if (this.getById(reservationId) == null) {
             Helper.showMessage("notFound");
@@ -53,10 +57,12 @@ public class ReservationManager {
         return this.reservationDao.deleteByRoomId(roomId);
     }
 
+    // Returns the reservation with ID
     public Reservation getById(int selectReservationId) {
         return this.reservationDao.getById(selectReservationId);
     }
 
+    // Gets the reservation data for the table
     public ArrayList<Object[]> getForTable(int size, ArrayList<Reservation> reservationList) { //Create objects as many as the number of columns
         ArrayList<Object[]> reservationObjectList = new ArrayList<>();
 
@@ -81,6 +87,7 @@ public class ReservationManager {
         return reservationObjectList;
     }
 
+    // Room Filtering
     public ArrayList<Reservation> searchForReservation(String customerName, String customerIdentity, String customerPhone) {
         String query = "SELECT * FROM public.reservation AS re";
         ArrayList<String> where = new ArrayList<>();

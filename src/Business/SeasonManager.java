@@ -15,14 +15,17 @@ public class SeasonManager {
         this.seasonDao = new SeasonDao();
     }
 
+    // Brings all seasons
     public ArrayList<Season> findAll() {
         return seasonDao.findAll();
     }
 
+    // Fetches seasons with hotel ID
     public ArrayList<Season> findAllForTable(int hotelId) {
         return seasonDao.findAllforTable(hotelId);
     }
 
+    // New season inserts
     public boolean add(Season season) {
         if (this.getByDate(season) != null) {
             Helper.showMessage("The season for these start and end dates already exists!");
@@ -31,6 +34,7 @@ public class SeasonManager {
         return this.seasonDao.add(season);
     }
 
+    // Updates season
     public boolean update(Season season) {
         if (this.getById(season.getSeasonId()) == null) {
             Helper.showMessage("notFound");
@@ -39,6 +43,7 @@ public class SeasonManager {
         return this.seasonDao.update(season);
     }
 
+    // Deletes the season
     public boolean delete(int seasonId) {
         if (this.getById(seasonId) == null) {
             Helper.showMessage("notFound");
@@ -51,6 +56,7 @@ public class SeasonManager {
         return this.seasonDao.deleteByHotelId(hotelId);
     }
 
+    // Fetches season with ID
     public Season getById(int selectSeasonId) {
         return this.seasonDao.getById(selectSeasonId);
     }
@@ -59,6 +65,7 @@ public class SeasonManager {
         return this.seasonDao.getByDate(season, season.getSeasonId());
     }
 
+    // Gets season data for the table
     public ArrayList<Object[]> getForTable(int size, ArrayList<Season> seasonList) { //Create objects as many as the number of columns
         ArrayList<Object[]> seasonObjectList = new ArrayList<>();
 
